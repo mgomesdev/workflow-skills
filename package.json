@@ -1,0 +1,24 @@
+{
+  "name": "workflow-skills",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "description": "Open Agent Skills & Agent Plugins harness (25 Atoms + 10 Molecules) compliant with agentskills.io and agent-plugins.org",
+  "license": "MIT",
+  "scripts": {
+    "lint:wiki": "node scripts/lint-wiki.mjs",
+    "validate:skills:deterministic": "node scripts/validate-skills.mjs --mode=deterministic --all",
+    "validate:skills:probabilistic": "node scripts/validate-skills.mjs --mode=probabilistic --all",
+    "validate:skills": "pnpm run validate:skills:deterministic && pnpm run validate:skills:probabilistic",
+    "test:unit": "vitest run",
+    "quality-gate": "pnpm run lint:wiki && pnpm run validate:skills && pnpm run test:unit"
+  },
+  "dependencies": {
+    "gray-matter": "4.0.3",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "vitest": "5.0.5"
+  }
+}
