@@ -1,5 +1,7 @@
 # workflow-skills
 
+![Arquitetura workflow-skills — 25 Átomos, 10 Moléculas e Ciclo AI-DLC](./assets/workflow-skills-architecture.png)
+
 Coleção de **35 Agent Skills componíveis** (**25 Átomos `a-*`** e **10 Moléculas `m-*`**) que automatizam meu fluxo pessoal de engenharia de software com agentes de IA - da memória persistente em Markdown e planejamento ágil (INVEST/SMART) até execução paralela em Git Worktrees, governança de Pull Requests no Azure DevOps, FinOps de tokens, triagem de telemetria em produção e curadoria editorial.
 
 Todas as skills seguem a especificação aberta do [**Agent Skills (`agentskills.io`)**](https://agentskills.io) e o empacotamento [**Agent Plugins (`agent-plugins.org`)**](https://agent-plugins.org), são **100% agnósticas de projeto** e contam com validação estrutural (`skills-ref`) e suítes de avaliação (`evals/evals.json`).
