@@ -1,0 +1,41 @@
+{
+  "skill_name": "a-ado-pr-threads",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Leia e faça a triagem das threads de comentários abertas na Pull Request #86 usando o átomo a-ado-pr-threads.",
+      "expected_output": "Listagem de todas as threads da PR #86 via repo_pull_request_thread (action: list, fullResponse: true), descarte de eventos automáticos de sistema (commentType: 3 / RefUpdate) e threads deletadas, extração de threadId, status, threadContext (filePath e linhas) e classificação Conventional Comments (issue:, todo:, suggestion:, nitpick:, question:, praise:).",
+      "expectations": [
+        "Consulta todas as threads da PR via repo_pull_request_thread com action list e fullResponse true",
+        "Filtra e descarta threads deletadas (isDeleted == true) e eventos automáticos de sistema (commentType == 3 / RefUpdate)",
+        "Extrai threadId, status, localização no código (threadContext.filePath e linhas) e prefixo Conventional Comments das threads humanas (commentType == 1)",
+        "Inclui auditoria transversal nos demais arquivos modificados da PR quando um apontamento indicar erro de padrão de código"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Responda à thread #12 da PR #86 informando o hash do commit de correção e marque o status da thread como Fixed via a-ado-pr-threads.",
+      "expected_output": "Publicação de resposta técnica na thread #12 via repo_pull_request_thread_write (action: reply) referenciando o commit hash, atualização do status da thread via repo_pull_request_thread_write (action: update_status, status: Fixed ou Closed conforme o tipo) e exibição da tabela resumo.",
+      "expectations": [
+        "Publica a resposta técnica na thread via repo_pull_request_thread_write com action reply",
+        "Atualiza o status da thread via repo_pull_request_thread_write com action update_status para Fixed (ou Closed para dúvidas/praise)",
+        "Apresenta a tabela resumida com Thread #ID, Arquivo/Escopo, Resposta enviada e Novo Status",
+        "Respeita a fronteira estrita: não executa git commit/push sozinho nem altera a descrição principal da PR ou do Work Item"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Leia, faça a triagem e responda aos comentários de Code Review da Pull Request #86 no Azure DevOps",
+      "/a-ado-pr-threads 86",
+      "Verifique as threads ativas da PR atual filtrando commentType 3 e marque as threads corrigidas como Fixed",
+      "Responda às threads de revisão da PR no ADO via repo_pull_request_thread_write e feche os apontamentos resolvidos"
+    ],
+    "should_not_trigger": [
+      "Abra uma nova Pull Request da sub-branch atual para a branch da história no Azure DevOps",
+      "Publique o comentário de resumo executivo da entrega na discussão da User Story #115",
+      "Sincronize a descrição SMART e o estado da task #175 no Azure Boards",
+      "Faça o commit semântico e push das alterações locais para o origin"
+    ]
+  }
+}

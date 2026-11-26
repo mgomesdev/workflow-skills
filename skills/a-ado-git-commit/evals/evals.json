@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-git-commit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Faça o commit local das alterações da task atual na branch feat/us-115-task-175 usando o átomo a-ado-git-commit.",
+      "expected_output": "Verificação da branch ativa (feat/us-115-task-175, garantindo que não é a main), stage seletivo via git add ignorando arquivos temporários/.env*, criação do commit semântico Conventional Commits com sufixo (#175) e trailer Agent-Session: antigravity:<SESSION_ID>, retornando hash, mensagem e lista de arquivos sem executar git push.",
+      "expectations": [
+        "Valida a branch ativa via git status/git branch garantindo que não é a branch protegida main",
+        "Executa stage seletivo (git add) apenas dos arquivos pertinentes ao escopo, ignorando .env* e arquivos temporários",
+        "Cria o commit no padrão Conventional Commits <type>(<scope>): <descrição> (#175) com trailer Agent-Session",
+        "Reporta o Commit Hash, a mensagem completa e a lista de arquivos commitados sem executar git push"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-ado-git-commit quando o repositório estiver posicionado diretamente na branch main e com um arquivo .env modificado.",
+      "expected_output": "Bloqueio imediato do commit direto na branch main/master no pre-flight check e exclusão estrita de arquivos de credenciais (.env*) do stage.",
+      "expectations": [
+        "Bloqueia a execução do commit direto na branch main ou master durante o pre-flight check",
+        "Ignora arquivos de credenciais (.env*) e artefatos fora de escopo durante o stage seletivo",
+        "Respeita a fronteira estrita: não faz git push, não abre Pull Request e não altera Work Items no Azure Boards"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Faça apenas o commit semântico local das alterações na branch feat/us-115-task-175",
+      "/a-ado-git-commit",
+      "Adicione os arquivos modificados ao stage seletivo e crie o commit Conventional Commits referenciando a task #175",
+      "Commite localmente as mudanças da task atual com o trailer Agent-Session sem fazer push"
+    ],
+    "should_not_trigger": [
+      "Envie os commits locais já criados para o repositório remoto origin com git push -u",
+      "Abra a Pull Request da sub-branch atual para a branch da história no Azure DevOps",
+      "Expurgue e delete as branches locais e remotas das tarefas já concluídas",
+      "Sincronize a descrição SMART e o estado da task #175 no Azure Boards"
+    ]
+  }
+}

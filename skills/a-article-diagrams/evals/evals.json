@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-article-diagrams",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Quebre o diagrama monolítico do artigo técnico em diagramas Mermaid modulares por seção aplicando a estética Sketch / Blueprint Dark via a-article-diagrams.",
+      "expected_output": "Consulta à paleta de cores em identidade-visual-agentic-curator.md e linguagem natural em diretrizes-editoriais-tom-de-voz.md, substituição do diagrama único gigante por diagramas Mermaid verticais (flowchart TB ou flowchart TD) focados por etapa com diretiva %%{init}%%, classes semânticas (sketchNode, sketchGate, sketchStorage, sketchPostit) e formas variadas (pílulas, hexágonos, cilindros).",
+      "expectations": [
+        "Consulta a paleta e tokens de diagramas em identidade-visual-agentic-curator.md e vocabulário natural em diretrizes-editoriais-tom-de-voz.md",
+        "Substitui o diagrama monolítico por diagramas Mermaid modulares por fase ancorados no exemplo prático contínuo do artigo",
+        "Prioriza orientação vertical (flowchart TB ou flowchart TD) para leitura responsiva em contêineres estreitos (max-w-[65ch])",
+        "Aplica a estética Sketch / Blueprint Dark com diretiva %%{init}%%, classes semânticas (sketchNode, sketchGate, sketchStorage) e aspas duplas em nós com caracteres especiais"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Valide e corrija um diagrama Mermaid de artigo que está em orientação horizontal larga, sem aspas em parênteses nos rótulos e com jargões sintéticos de IA nos nós.",
+      "expected_output": "Conversão da orientação para flowchart TB/TD (evitando compressão de SVG no mobile), proteção de todos os rótulos com parênteses/caracteres especiais entre aspas duplas id[\"Texto (Info)\"] e reescrita dos textos dos nós seguindo a Linguagem Onipresente Compartilhada.",
+      "expectations": [
+        "Converte diagramas horizontais largos para flowchart TB ou flowchart TD para evitar compressão no mobile",
+        "Protege rótulos de nós que contenham parênteses ou caracteres especiais usando aspas duplas id[\"Texto (Info)\"]",
+        "Substitui termos sintéticos de IA dentro dos nós pela Linguagem Onipresente Compartilhada de diretrizes-editoriais-tom-de-voz.md"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Module os diagramas Mermaid verticais Dark Mode por seção para o artigo técnico",
+      "/a-article-diagrams",
+      "Quebre o fluxograma monolítico do post em diagramas Mermaid flowchart TB com estética Sketch / Blueprint Dark",
+      "Padronize os diagramas Mermaid do artigo com as classes sketchNode e sketchGate da Wiki"
+    ],
+    "should_not_trigger": [
+      "Renderize a imagem PNG 1200x630 de capa Open Graph do artigo via Playwright",
+      "Corrija apenas erros de ortografia, acentuação e concordância verbal no texto Markdown",
+      "Faça o commit semântico e push das alterações locais para o repositório remoto",
+      "Valide o pre-flight gate do Azure Boards para a task #175"
+    ]
+  }
+}

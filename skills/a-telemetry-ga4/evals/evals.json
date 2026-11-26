@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-telemetry-ga4",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Extraia o snapshot de comportamento de uso e métricas HEART dos últimos 7 dias via Google Analytics 4 usando o a-telemetry-ga4.",
+      "expected_output": "Checagem das credenciais GA4_PROPERTY_ID e GOOGLE_APPLICATION_CREDENTIALS, execução do relatório contra properties/{GA4_PROPERTY_ID}:runReport com dimensões eventName/pagePath e métricas eventCount/totalUsers para os eventos canônicos (page_view, download_cv_click, article_card_click, article_scroll_depth, article_code_copy, article_share_click) e geração do bloco Snapshot GA4.",
+      "expectations": [
+        "Verifica a disponibilidade das credenciais GA4_PROPERTY_ID e GOOGLE_APPLICATION_CREDENTIALS no ambiente",
+        "Consulta o endpoint properties/{GA4_PROPERTY_ID}:runReport da Google Analytics Data API v1beta com dimensões eventName e pagePath",
+        "Extrai os sinais HEART dos eventos canônicos (page_view, download_cv_click, article_scroll_depth, article_code_copy, article_share_click)",
+        "Formata o resultado no bloco padronizado Snapshot GA4 contendo Usuários Ativos, Top Artigos Lidos e Conversão de Objetivos HEART"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Execute o a-telemetry-ga4 quando as variáveis GA4_PROPERTY_ID ou GOOGLE_APPLICATION_CREDENTIALS não estiverem configuradas no .env.",
+      "expected_output": "Detecção da ausência de credenciais no passo 1, reportando claramente o contrato de credencial pendente sem consultar Sentry/Vercel nem criar cards no Azure Boards.",
+      "expectations": [
+        "Reporta o contrato de credencial pendente quando GA4_PROPERTY_ID ou GOOGLE_APPLICATION_CREDENTIALS estão ausentes",
+        "Não consulta Sentry ou Vercel (papel de a-telemetry-sentry e a-telemetry-vercel)",
+        "Não calcula matriz de risco nem cria Work Items no Azure DevOps (fronteira estrita)"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Extraia as métricas HEART de produto (page_view, scroll depth, downloads de CV) dos últimos 7 dias via GA4 Data API",
+      "/a-telemetry-ga4",
+      "Gere o Snapshot GA4 de comportamento de uso dos leitores em produção",
+      "Consulte os eventos article_scroll_depth, download_cv_click e article_code_copy no Google Analytics 4"
+    ],
+    "should_not_trigger": [
+      "Consulte as issues de erro e stack traces recentes de produção no Sentry MCP",
+      "Inspecione o status dos deploys mais recentes e logs 5xx na Vercel",
+      "Extraia o consumo de tokens e custo em USD da sessão do agente no AgentsView",
+      "Crie um novo Work Item no topo do Backlog do Azure Boards"
+    ]
+  }
+}

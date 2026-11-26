@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-standup-curator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Gere a narrativa de Daily Standup de hoje com base nos últimos commits e entradas do knowledge/log.md usando a molécula m-standup-curator.",
+      "expected_output": "Inspeção de git log --since='yesterday' --oneline e das últimas entradas de knowledge/log.md, consulta à Linguagem Onipresente e Regra do Efeito Prático em diretrizes-editoriais-tom-de-voz.md (1ª pessoa 'Eu') e estruturação da narrativa em 4 atos: Capítulo 1 - O que fechei ontem, Capítulo 2 - Aprendizados práticos, Capítulo 3 - O que estou fazendo hoje e Capítulo 4 - Impedimentos.",
+      "expectations": [
+        "Inspeciona o histórico recente via git log --since='yesterday' --oneline e as últimas entradas de knowledge/log.md",
+        "Consome diretrizes-editoriais-tom-de-voz.md aplicando a 1ª pessoa ('Eu'), a Linguagem Onipresente e a Regra do Efeito Prático",
+        "Estrutura a narrativa do Modo Daily nos 4 capítulos: O que fechei ontem, Aprendizados práticos, O que estou fazendo hoje e Impedimentos",
+        "Converte hashes de commit e nomes técnicos de PRs em comunicação humana direta focada no efeito prático"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Prepare a Apresentação Semanal (Modo Weekly Showcase) Source-Ready para ingestão no NotebookLM consolidando os marcos dos últimos 7 dias via m-standup-curator.",
+      "expected_output": "Coleta dos marcos entregues nos últimos 7 dias via Git e knowledge/log.md, seleção de uma das 29 regras do Impatient Programming em references/imp-rules.md como Fio Condutor da Semana, leitura de identidade-visual-agentic-curator.md e geração do documento Markdown Source-Ready com frontmatter YAML contendo impatient_programming_rule e notebooklm_slide_brief (6 slides).",
+      "expectations": [
+        "Coleta os marcos entregues nos últimos 7 dias via Git e knowledge/log.md",
+        "Consulta references/imp-rules.md para ancorar a narrativa em uma das 29 regras do Impatient Programming como Fio Condutor da Semana",
+        "Gera o documento Markdown Source-Ready com frontmatter YAML contendo impatient_programming_rule e notebooklm_slide_brief (slide_1 a slide_6)"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Gere a narrativa da minha Daily Standup de hoje com base no git log e no knowledge/log.md",
+      "/m-standup-curator",
+      "Monte a apresentação Weekly Engineering Showcase da semana pronta para o NotebookLM ancorada em uma regra do Impatient Programming",
+      "Transforme os commits e entregas de ontem em uma narrativa em 4 capítulos para a daily"
+    ],
+    "should_not_trigger": [
+      "Publique o comentário de resumo executivo de 3 bullets diretamente no card da US #115 no Azure Boards",
+      "Execute a esteira editorial completa para publicar um artigo técnico em posts/",
+      "Calcule o bump SemVer e atualize o CHANGELOG.md para a release",
+      "Faça o commit semântico e push das alterações locais para o origin"
+    ]
+  }
+}

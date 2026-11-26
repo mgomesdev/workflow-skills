@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-article-proofread",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Faça a revisão gramatical, ortográfica e de formatação Markdown do artigo em posts/ usando o átomo a-article-proofread.",
+      "expected_output": "Leitura atenta do arquivo .md corrigindo cirurgicamente desvios de português (ortografia, concordância nominal e verbal, regência, crase, acentuação e vírgulas separando sujeito de predicado) e formatação Markdown (listas, tags de código, links), preservando integralmente o estilo do autor e listando as linhas corrigidas e o motivo de cada ajuste.",
+      "expectations": [
+        "Corrige cirurgicamente erros de ortografia, concordância nominal e verbal, regência, crase e acentuação no arquivo .md",
+        "Ajusta erros de pontuação como vírgulas separando sujeito de predicado e inconsistências de formatação Markdown (listas, tags de código, links)",
+        "Preserva rigorosamente o estilo, a estrutura de raciocínio e o tom de voz original sem reescrever trechos por preferência estilística",
+        "Emite um relatório claro listando quais linhas foram corrigidas e o motivo de cada ajuste"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Revise a gramática de um post técnico que utiliza termos em inglês como skeleton loader, empty state, retry e Vibe Design.",
+      "expected_output": "Preservação integral das terminologias técnicas consagradas de engenharia (skeleton loader, prompt, retry, empty state, Vibe Design) sem traduzi-las artificialmente e sem alterar diagramas ou a voz autoral.",
+      "expectations": [
+        "Preserva sem traduzir termos técnicos consagrados da área de desenvolvimento (skeleton loader, prompt, retry, empty state, Vibe Design)",
+        "Aplica apenas edições pontuais de gramática e pontuação sem reescrever parágrafos inteiros",
+        "Respeita a fronteira estrita: não altera o tom de voz autoral (papel do a-article-voice) nem modifica diagramas Mermaid ou capas"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Revise a gramática, pontuação, concordância e ortografia do artigo técnico em Markdown preservando meu estilo",
+      "/a-article-proofread",
+      "Corrija erros de digitação, crase e formatação Markdown no post sem reescrever o tom de voz original",
+      "Faça o proofread linguístico do artigo em posts/ e liste as linhas corrigidas"
+    ],
+    "should_not_trigger": [
+      "Transponha o artigo para a primeira pessoa autoral ('Eu') e gere o resumo executivo para o LinkedIn",
+      "Audite criticamente as decisões de engenharia, poluição visual e discrepâncias entre texto e diagramas do post",
+      "Gere a capa 1200x630 Blueprint 2D em HTML/CSS via Playwright para o artigo",
+      "Module os diagramas Mermaid verticais Dark Mode por fase no artigo"
+    ]
+  }
+}

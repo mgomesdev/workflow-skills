@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-ado-dispatcher",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Despache concorrentemente as Subtasks SMART em estado To Do da User Story INVEST #115 em worktrees isoladas usando a molécula m-ado-dispatcher.",
+      "expected_output": "Bootstrap da branch feat/us-115, inspeção da US #115 via wit_work_item para listar subtasks Hierarchy-Forward em estado To Do, aplicação do throttling concorrente (máx 3 subagentes por US), alocação determinística de porta PORT = 3100 + (TASK_ID % 500) com fallback via lsof, alocação prévia das tasks para Doing no ADO e disparo de invoke_subagent com Workspace: inherit operando em .worktrees/task-<TASK_ID>.",
+      "expectations": [
+        "Inspeciona o card pai #115 via wit_work_item e seleciona as subtasks filhas (Hierarchy-Forward) em estado To Do",
+        "Aplica throttling de concorrência limitando a execução a no máximo 3 subagentes simultâneos por User Story",
+        "Calcula a porta dedicada PORT = 3100 + (TASK_ID % 500) com teste de disponibilidade local e injeta PORT e PLAYWRIGHT_TEST_BASE_URL no subagente",
+        "Dispara invoke_subagent com Workspace: inherit operando estritamente em .worktrees/task-<TASK_ID> (nunca Workspace: share ou branch)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Gerencie o ciclo de vida da worktree .worktrees/task-175 e do subagente quando a PR Nível 1 receber apontamentos de Code Review e depois quando for mergeada.",
+      "expected_output": "Preservação da worktree e do subagente em standby enquanto a PR estiver aberta (bloqueando git worktree prune), reuso do mesmo subagente via send_message para aplicar correções na mesma worktree, execução de git worktree prune somente após confirmação de PR Completed/Merged e zero deleção de branches (delegada ao a-ado-branch-purge).",
+      "expectations": [
+        "Preserva a Git Worktree e o subagente ativos em standby durante o Code Review e reutiliza o mesmo subagente via send_message para correções",
+        "Executa git worktree prune somente após confirmar via MCP que a PR vinculada está Completed (mergeada)",
+        "Nunca deleta branches locais ou remotas, delegando qualquer exclusão de branch ao átomo manual a-ado-branch-purge"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Despache as subtasks SMART da US #115 em paralelo usando subagentes em Git Worktrees isoladas",
+      "/m-ado-dispatcher --us 115",
+      "Orquestre a execução concorrente das tarefas filhas da história INVEST #115 com portas dedicadas 3100-3600",
+      "Inicie o dispatcher de subtasks da US #115 em background respeitando o pool máximo de 3 subagentes"
+    ],
+    "should_not_trigger": [
+      "Feche e consolide a release da User Story #115 abrindo a PR Nível 2 para a main",
+      "Expurgue manualmente as branches locais e remotas das tarefas já concluídas",
+      "Decomponha a User Story #115 em subtarefas SMART durante o planejamento",
+      "Apenas faça o commit semântico e push da branch atual"
+    ]
+  }
+}

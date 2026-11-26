@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-article-voice",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Aplique o tom de voz autoral em 1ª pessoa ('Eu') e a Linguagem Onipresente Compartilhada no artigo em posts/ usando o átomo a-article-voice.",
+      "expected_output": "Leitura obrigatória de knowledge/wiki/concepts/diretrizes-editoriais-tom-de-voz.md, transposição de termos impessoais/time abstrato para a 1ª pessoa ('Eu'), remoção de termos da Blacklist e travessões longos (—), aplicação das substituições para linguagem natural, abstração de IDs internos (#138, PR #66) para o leitor externo e formulação de títulos H2/H3 dinâmicos derivados do contexto de cada seção.",
+      "expectations": [
+        "Consulta knowledge/wiki/concepts/diretrizes-editoriais-tom-de-voz.md para carregar a Blacklist e o Dicionário de Substituição para Linguagem Natural",
+        "Transpõe construções impessoais ou de time abstrato para a 1ª pessoa do singular ('Eu') com postura de arquiteto, revisor e aprovador",
+        "Remove travessões longos (—), métricas temporais inventadas e identificadores internos de cards/PRs (#138, PR #66) da prosa geral",
+        "Formula títulos ## (H2) e ### (H3) naturais e específicos derivados do contexto real de cada seção, evitando rótulos fixos de template"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Estruture a abertura em Pirâmide Invertida (NN/g), a seção de trade-offs e o resumo executivo para o feed do LinkedIn de um artigo técnico usando o a-article-voice.",
+      "expected_output": "Garantia de que o 1º parágrafo da Introdução antecipa a conclusão e os resultados (Pirâmide Invertida NN/g), validação da tabela comparativa de alternativas e subseção explícita de trade-offs, e geração do resumo para o feed do LinkedIn com hook de impacto, 3 pontos numerados com efeito prático e CTA.",
+      "expectations": [
+        "Aplica a Pirâmide Invertida no 1º parágrafo da Introdução antecipando a decisão arquitetural e os resultados alcançados",
+        "Garante a presença de comparação de alternativas e subseção explícita de trade-offs (o que ganhou vs. o que abriu mão)",
+        "Estrutura o resumo para o feed do LinkedIn com hook de impacto, 3 pontos numerados com efeito prático direto e CTA para o artigo completo"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Lapide o tom de voz do artigo para a primeira pessoa autoral ('Eu') seguindo diretrizes-editoriais-tom-de-voz.md",
+      "/a-article-voice",
+      "Aplique a Linguagem Onipresente Compartilhada no post, crie títulos H2/H3 derivados do contexto e gere o resumo para o LinkedIn",
+      "Remova termos da Blacklist, travessões longos e jargões sintéticos de IA do artigo técnico"
+    ],
+    "should_not_trigger": [
+      "Corrija apenas erros de ortografia e acentuação sem alterar o estilo ou reescrever frases",
+      "Renderize a capa PNG 1200x630 em HTML/CSS via Playwright para o card do artigo",
+      "Module apenas os diagramas Mermaid verticais Dark Mode do artigo",
+      "Faça o commit semântico e push das alterações locais para o origin"
+    ]
+  }
+}

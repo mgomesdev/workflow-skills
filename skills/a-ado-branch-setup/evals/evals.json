@@ -1,0 +1,50 @@
+{
+  "skill_name": "a-ado-branch-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Crie a sub-branch remota e configure o ambiente local para a Task #175 da User Story #115 usando o átomo a-ado-branch-setup.",
+      "expected_output": "Verificação da working tree via git status --porcelain, criação da branch remota feat/us-115-task-175 a partir de feat/us-115 via repo_create_branch no MCP azure-devops, vínculo do ArtifactLink (Branch) no card #175 via wit_work_item_link_write e provisionamento local em .worktrees/task-175 via git fetch e git worktree add.",
+      "expectations": [
+        "Verifica se a working tree local está limpa executando git status --porcelain",
+        "Cria a sub-branch remota feat/us-115-task-175 a partir da sourceBranchName feat/us-115 usando repo_create_branch no MCP azure-devops",
+        "Vincula a branch criada ao Work Item #175 via wit_work_item_link_write com action add_artifact_link e linkType Branch",
+        "Sincroniza com git fetch origin e provisiona a worktree isolada em .worktrees/task-175 com git worktree add -B"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-ado-branch-setup para a Task #176 (US #115) em um repositório cuja working tree possui arquivos modificados não commitados de outra tarefa.",
+      "expected_output": "Interrupção imediata no passo 1 após detectar arquivos sujos via git status --porcelain, solicitando confirmação do desenvolvedor antes de criar a branch remota ou alterar o workspace.",
+      "expectations": [
+        "Executa git status --porcelain no pre-flight check da working tree local",
+        "Interrompe a operação e solicita confirmação com o desenvolvedor ao detectar arquivos sujos fora do escopo",
+        "Não altera o estado nem a alocação do Work Item no Azure Boards (fronteira estrita)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Posicione localmente a nova sub-branch feat/us-115-task-177 da Task #177 sem tirar o diretório raiz do projeto da branch main.",
+      "expected_output": "Cumprimento da proibição de git checkout na raiz do projeto, executando git fetch origin e git worktree add -B feat/us-115-task-177 .worktrees/task-177 origin/feat/us-115-task-177 e retornando a confirmação padronizada.",
+      "expectations": [
+        "Nunca executa git checkout no diretório raiz do projeto para preservar a raiz na branch main",
+        "Cria a Git Worktree dentro de .worktrees/task-177 rastreando origin/feat/us-115-task-177",
+        "Retorna a mensagem determinística confirmando criação, vínculo ao card #177 e posicionamento em .worktrees/task-177"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Crie a sub-branch remota feat/us-115-task-175 a partir da feat/us-115, vincule ao card #175 e configure a worktree local",
+      "/a-ado-branch-setup 115 175",
+      "Configure a infraestrutura de branch remota e ArtifactLink no Azure DevOps para a task #175 da US #115",
+      "Provisione a branch oficial da task #176 no ADO via repo_create_branch e monte a worktree .worktrees/task-176"
+    ],
+    "should_not_trigger": [
+      "Expurgue e delete as branches locais e remotas das tasks já mergeadas no Azure DevOps",
+      "Atribua a task #175 para o desenvolvedor padrão e mude o estado para Doing no board",
+      "Valide o pre-flight gate do Azure Boards para verificar se a US #115 tem planning concluída",
+      "Faça o commit semântico e push das alterações da branch atual"
+    ]
+  }
+}

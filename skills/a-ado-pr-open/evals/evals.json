@@ -1,0 +1,41 @@
+{
+  "skill_name": "a-ado-pr-open",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Abra a Pull Request Nível 1 da sub-branch feat/us-115-task-175 apontando para feat/us-115 no Azure DevOps usando o a-ado-pr-open.",
+      "expected_output": "Leitura do template oficial .azuredevops/pull_request_template/branches/feat.md, coleta de telemetria AgentsView via pnpm run usage:pr, criação da PR via repo_pull_request_write (action: create) vinculando workItems '175 115', atribuição automática do revisor via update_reviewers, manutenção do card pai #115 na coluna Developing e disparo do resumo executivo via a-ado-us-summary (wit_work_item_comment_write).",
+      "expectations": [
+        "Lê o template oficial .azuredevops/pull_request_template/branches/feat.md e coleta a tabela de telemetria via pnpm run usage:pr",
+        "Cria a Pull Request de refs/heads/feat/us-115-task-175 para refs/heads/feat/us-115 via repo_pull_request_write com workItems '175 115'",
+        "Atribui automaticamente o revisor padrão à PR executando repo_pull_request_write com action update_reviewers",
+        "Mantém o card pai #115 na coluna Developing (System.State = Doing) e publica o resumo executivo via a-ado-us-summary (wit_work_item_comment_write)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Abra a Pull Request Nível 2 do card principal INVEST feat/us-115 apontando para a branch main após todas as subtasks filhas terem sido concluídas.",
+      "expected_output": "Verificação via wit_work_item de que todas as subtasks filhas da US #115 foram aprovadas, acionamento do hook pre-release a-ado-release-bump, leitura do template .azuredevops/pull_request_template/branches/main.md, criação da PR para refs/heads/main via repo_pull_request_write, atribuição de revisor e movimentação do card pai #115 para a coluna Code Review (System.State = Pending).",
+      "expectations": [
+        "Verifica via wit_work_item que todas as subtasks SMART filhas da US #115 estão concluídas e aciona o pre-release hook a-ado-release-bump",
+        "Consome o template .azuredevops/pull_request_template/branches/main.md para abrir a PR de refs/heads/feat/us-115 para refs/heads/main",
+        "Move o card pai #115 no Azure Boards para a coluna Code Review / Pending via wit_work_item_write",
+        "Atribui o revisor padrão via update_reviewers e publica o comentário de resumo executivo no card pai #115"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Abra a Pull Request da sub-branch feat/us-115-task-175 para a branch feat/us-115 no Azure DevOps",
+      "/a-ado-pr-open",
+      "Crie a PR Nível 2 da história feat/us-115 para a main com o template oficial e atribua o revisor",
+      "Atualize ou abra a Pull Request no ADO vinculando os Work Items #175 e #115 e disparando o resumo executivo"
+    ],
+    "should_not_trigger": [
+      "Leia e responda as threads de comentários de revisão abertas na Pull Request #86",
+      "Faça o stage seletivo, commit semântico e push da branch atual para o origin",
+      "Expurgue as branches locais e remotas cujas Pull Requests já foram mergeadas",
+      "Sincronize a descrição SMART e o estado da task #175 no Azure Boards"
+    ]
+  }
+}

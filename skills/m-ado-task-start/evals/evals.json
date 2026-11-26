@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-ado-task-start",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Inicie formalmente a Subtask SMART #175 (filha da US #115) no Azure DevOps e prepare o ambiente Git local usando a molécula m-ado-task-start.",
+      "expected_output": "Orquestração sequencial dos 4 átomos: (1) a-ado-board-gate validando a planning da US #115 e garantindo coluna Developing, (2) a-ado-context-audit auditando drift contra knowledge/log.md e codebase, (3) a-ado-task-assign alocando a Task #175 ao desenvolvedor padrão e mudando estado para Doing, e (4) a-ado-branch-setup criando a branch remota feat/us-115-task-175, vinculando ArtifactLink e posicionando a worktree local.",
+      "expectations": [
+        "Invoca na Etapa 1 o átomo a-ado-board-gate para validar a Planning da US pai #115 e garantir que esteja na coluna Developing",
+        "Invoca na Etapa 2 o átomo a-ado-context-audit para confrontar o escopo da Task #175 com knowledge/log.md e a árvore da codebase",
+        "Invoca na Etapa 3 o átomo a-ado-task-assign para atribuir System.AssignedTo e atualizar System.State para Doing",
+        "Invoca na Etapa 4 o átomo a-ado-branch-setup para criar a sub-branch remota feat/us-115-task-175, vincular ao card #175 e posicionar o workspace local"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o m-ado-task-start para uma tarefa cujo card pai ainda está estacionado em Backlog/Refinament sem Planning concluída.",
+      "expected_output": "Bloqueio imediato na Etapa 1 pelo átomo a-ado-board-gate (BLOCKED: Planning Required), abortando o fluxo antes de alocar a task (a-ado-task-assign) ou criar a sub-branch remota (a-ado-branch-setup).",
+      "expectations": [
+        "Aborta imediatamente o fluxo quando o a-ado-board-gate retorna bloqueio por ausência de Planning no card pai",
+        "Não aloca a task nem cria a sub-branch remota quando o pre-flight gate falha",
+        "Respeita a fronteira estrita: não implementa código da feature, não faz commits e não abre Pull Request"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Inicie a task #175 de ponta a ponta: valide o gate da US, audite contexto, aloque para Doing e crie a sub-branch",
+      "/m-ado-task-start 175",
+      "Puxe a subtask SMART #175 da sprint preparando o board e a branch feat/us-115-task-175",
+      "Rode a molécula de inicialização de tarefa no Azure DevOps para o card #176"
+    ],
+    "should_not_trigger": [
+      "Apenas faça o commit semântico e push das alterações locais para o origin",
+      "Feche e consolide a release da User Story #115 abrindo a PR Nível 2 para a main",
+      "Expurgue as branches locais e remotas das tarefas já concluídas e mergeadas",
+      "Responda às threads de comentários de revisão na Pull Request #86"
+    ]
+  }
+}

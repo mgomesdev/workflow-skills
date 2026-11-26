@@ -1,0 +1,47 @@
+{
+  "skill_name": "a-wiki-auditor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Execute uma varredura estrutural determinística na LLM Wiki para verificar links quebrados, YAML frontmatter e páginas órfãs.",
+      "expected_output": "Execução do script pnpm run lint:wiki (lint.mjs com gray-matter e zod) validando os arquivos essenciais (index.md, log.md, SCHEMA.md), frontmatter YAML das páginas em knowledge/wiki/ e links relativos sem erros.",
+      "expectations": [
+        "Executa o comando pnpm run lint:wiki ou node .agents/skills/a-wiki-auditor/scripts/lint.mjs",
+        "Verifica a existência dos arquivos essenciais de governança (index.md, log.md, SCHEMA.md)",
+        "Valida o YAML frontmatter e links internos Markdown das páginas em knowledge/wiki/",
+        "Identifica páginas órfãs não referenciadas em knowledge/index.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Consulte a LLM Wiki usando o protocolo de baixo token para descobrir as diretrizes de código frontend do projeto.",
+      "expected_output": "Leitura inicial de knowledge/index.md para localizar o slug exato da página e carregamento cirúrgico apenas do arquivo alvo em knowledge/wiki/engineering/diretrizes-codigo-frontend.md.",
+      "expectations": [
+        "Lê primeiramente o catálogo semântico knowledge/index.md para localizar o slug da página",
+        "Carrega cirurgicamente apenas o arquivo alvo em knowledge/wiki/ sem varrer diretórios inteiros"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Realize uma auditoria semântica na Living Wiki para identificar afirmações desatualizadas ou contradições e registre no log.",
+      "expected_output": "Inspeção das páginas em knowledge/wiki/ em busca de contradições, afirmações desatualizadas e conceitos faltantes, seguida do registro da entrada lint no topo de knowledge/log.md.",
+      "expectations": [
+        "Audita páginas da Living Wiki em busca de contradições, afirmações desatualizadas e conceitos faltantes",
+        "Registra a passagem da auditoria em knowledge/log.md no formato cronológico padronizado"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Audite a integridade estrutural e os links da LLM Wiki em knowledge/",
+      "Consulte a Wiki via index.md para encontrar a arquitetura de skills atômicas",
+      "Rode o lint da wiki para checar frontmatter YAML e páginas órfãs",
+      "/a-wiki-auditor"
+    ],
+    "should_not_trigger": [
+      "Valide o pre-flight gate do Azure Boards para a task #175",
+      "Faça o commit semântico das alterações locais na branch ativa",
+      "Gere a capa 1200x630 em HTML/CSS via Playwright para o novo artigo"
+    ]
+  }
+}

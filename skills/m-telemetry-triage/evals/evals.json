@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-telemetry-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Execute a triagem completa de telemetria de produção (Outer Loop) dos últimos 7 dias e alimente o Backlog do Azure Boards usando a molécula m-telemetry-triage.",
+      "expected_output": "Orquestração sequencial: (1) m-telemetry-digest compilando Sentry, Vercel e GA4 dos últimos 7 dias, (2) a-telemetry-risk cruzando dados, aplicando a Regra de Ouro Antirruído e classificando na Matriz de Risco (risk:low, risk:medium, risk:high) com templates INVEST/SMART, e (3) a-ado-item-create validando duplicidade via WIQL e criando os cartões no TOPO da coluna Backlog (StackRank priorizado) tipados em Conventional Commits.",
+      "expectations": [
+        "Encadeia na Etapa 1 a molécula m-telemetry-digest para compilar o snapshot unificado de Sentry, Vercel e GA4",
+        "Encadeia na Etapa 2 o átomo a-telemetry-risk para cruzar anomalias com uso real, classificar na Matriz de Risco e formatar propostas INVEST/SMART",
+        "Aplica a Regra de Ouro Antirruído (cria cards apenas para exceções com >= 2 ocorrências, quedas comprovadas em conversões HEART ou falhas de deploy/runtime)",
+        "Encadeia na Etapa 3 o átomo a-ado-item-create para cadastrar os novos cartões no topo da coluna Backlog do Azure Boards com StackRank priorizado e tags de risco"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o m-telemetry-triage via /schedule semanal quando houver apenas uma flutuação isolada de tráfego sem erros recorrentes nem queda de conversão.",
+      "expected_output": "Descarte da flutuação pontual pela Regra de Ouro Antirruído sem poluir o Backlog com cards desnecessários e respeito estrito à fronteira da molécula (não move cards para Doing/Developing nem executa código de implementação).",
+      "expectations": [
+        "Descarta flutuações pontuais de tráfego que não atendam aos critérios da Regra de Ouro Antirruído",
+        "Garante que novos cards criados nasçam exclusivamente na coluna Backlog sem movê-los para Doing ou Developing",
+        "Respeita a fronteira estrita: não executa código de implementação das features ou correções propostas"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Execute a molécula m-telemetry-triage para auditar a telemetria dos últimos 7 dias e alimentar o Backlog com base em dados reais",
+      "/m-telemetry-triage",
+      "Rode o Outer Loop completo: compile Sentry, Vercel e GA4, classifique na Matriz de Risco e crie os cards no Azure Boards",
+      "Faça a triagem semanal de telemetria de produção e cadastre as demandas priorizadas no topo do Backlog"
+    ],
+    "should_not_trigger": [
+      "Apenas extraia o snapshot bruto do GA4 sem calcular risco nem criar cards no Azure Boards",
+      "Execute o Inner-Loop de implementação de código na worktree para a task #175",
+      "Despache as subtasks SMART da US #115 para subagentes concorrentes",
+      "Feche a release da User Story #115 abrindo a PR Nível 2 para a main"
+    ]
+  }
+}

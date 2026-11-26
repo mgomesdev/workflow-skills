@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-telemetry-digest",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Compile o snapshot unificado de telemetria de produção dos últimos 7 dias encadeando Sentry, Vercel e GA4 via m-telemetry-digest.",
+      "expected_output": "Disparo sequencial dos 3 átomos com period: '7d' — (1) a-telemetry-sentry (issues não resolvidas e exceções), (2) a-telemetry-vercel (status do deploy ativo, builds e logs 5xx) e (3) a-telemetry-ga4 (usuários ativos, top rotas e conversão HEART) — e consolidação no documento Snapshot Unificado de Telemetria (Outer Loop).",
+      "expectations": [
+        "Encadeia a execução dos 3 átomos compostos: a-telemetry-sentry, a-telemetry-vercel e a-telemetry-ga4 com a janela temporal solicitada (default: 7d)",
+        "Agrega os dados de Saúde Operacional (Sentry), Saúde de Infraestrutura (Vercel) e Engajamento & Produto (GA4)",
+        "Consolida o documento estruturado Snapshot Unificado de Telemetria (Outer Loop) pronto para consumo pelo a-telemetry-risk",
+        "Respeita a fronteira estrita: não calcula a classificação de risco (papel do a-telemetry-risk) e não cria cards no Azure Boards (papel do a-ado-item-create)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o m-telemetry-digest quando uma das 3 fontes (ex.: GA4 Data API) reportar credencial ausente enquanto Sentry e Vercel retornam dados normalmente.",
+      "expected_output": "Agregação resiliente dos snapshots de Sentry e Vercel combinada com o status de credencial pendente reportado pelo a-telemetry-ga4 no Snapshot Unificado de Telemetria, sem travar a compilação nem criar Work Items.",
+      "expectations": [
+        "Preserva os relatórios parciais e alertas de credencial emitidos por cada átomo (a-telemetry-sentry, a-telemetry-vercel, a-telemetry-ga4)",
+        "Mantém a estrutura padronizada do Snapshot Unificado de Telemetria com Período, Saúde Técnica e Comportamento de Uso",
+        "Não grava itens diretamente no Azure Boards nem executa triagem de risco por conta própria"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Compile o snapshot unificado de telemetria de produção agregando Sentry, Vercel e GA4",
+      "/m-telemetry-digest",
+      "Gere o digest consolidado de saúde técnica, deploys e métricas HEART dos últimos 7 dias",
+      "Encadeie a-telemetry-sentry, a-telemetry-vercel e a-telemetry-ga4 em um relatório único de produção"
+    ],
+    "should_not_trigger": [
+      "Consulte exclusivamente o consumo de tokens e custo em USD da sessão no AgentsView",
+      "Crie diretamente os cards no topo do Backlog do Azure Boards via wit_work_item_write",
+      "Faça o commit semântico e push das alterações locais para o origin",
+      "Execute a esteira editorial de revisão e geração de capa de artigo"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-ado-commit-push",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Faça o commit semântico e suba as alterações da Task #175 na branch feat/us-115-task-175 para o repositório remoto usando a molécula m-ado-commit-push.",
+      "expected_output": "Orquestração sequencial: Etapa 1 invoca a-ado-git-commit (validação da branch, stage seletivo via git add e commit Conventional Commits com sufixo #175 e trailer Agent-Session) e Etapa 2 invoca a-ado-git-push (git push -u origin feat/us-115-task-175), retornando hash do commit, mensagem, arquivos enviados e confirmação de tracking sem abrir PR.",
+      "expectations": [
+        "Executa na Etapa 1 o protocolo do átomo a-ado-git-commit (stage seletivo git add e commit semântico Conventional Commits com #175)",
+        "Executa na Etapa 2 o protocolo do átomo a-ado-git-push (git push -u origin feat/us-115-task-175 com upstream tracking)",
+        "Retorna o relatório consolidado contendo hash do commit, mensagem semântica, arquivos enviados e status de tracking remoto",
+        "Respeita a fronteira estrita: não abre Pull Request (delegado a a-ado-pr-open) e não altera Work Items no Azure Boards"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o m-ado-commit-push quando a branch ativa for a main ou quando o commit na Etapa 1 falhar no pre-commit hook.",
+      "expected_output": "Bloqueio imediato na Etapa 1 (a-ado-git-commit / a-ado-git-push) por proteção da branch main ou falha no commit, impedindo a execução da Etapa 2 (git push) para o repositório remoto.",
+      "expectations": [
+        "Bloqueia commit e push diretos quando a branch ativa é a main ou master",
+        "Condiciona o envio remoto da Etapa 2 (a-ado-git-push) ao sucesso do commit na Etapa 1 (ou existência de commits locais válidos pendentes)",
+        "Mantém a composição estrita entre a-ado-git-commit e a-ado-git-push sem tocar no Azure Boards"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Commite as alterações locais com Conventional Commits e já faça o push para o origin na branch atual",
+      "/m-ado-commit-push",
+      "Faça stage, commit semântico e git push -u da task #175 em um único comando",
+      "Suba e commite tudo que foi alterado na sub-branch feat/us-115-task-175 para o repositório remoto"
+    ],
+    "should_not_trigger": [
+      "Faça apenas o commit local das alterações sem enviar para o repositório remoto",
+      "Apenas envie os commits locais já criados com git push sem fazer novo commit",
+      "Abra a Pull Request da sub-branch atual para a branch da história no Azure DevOps",
+      "Expurgue as branches locais e remotas das tarefas já concluídas"
+    ]
+  }
+}

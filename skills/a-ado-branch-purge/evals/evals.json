@@ -1,0 +1,41 @@
+{
+  "skill_name": "a-ado-branch-purge",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Limpe as branches locais e remotas já mergeadas da história #115 usando o /a-ado-branch-purge --us 115.",
+      "expected_output": "Auditoria das branches da história #115 via repo_pull_request no Azure DevOps, filtrando apenas as que possuem PR com status completed, exibição da tabela de confirmação e espera da aprovação explícita do usuário antes de rodar git branch -d e git push origin --delete.",
+      "expectations": [
+        "Lista branches locais e remotas correspondentes à US #115",
+        "Consulta o servidor MCP azure-devops usando repo_pull_request com status completed",
+        "Exibe tabela consolidada com Branch, PR Vinculada, Status PR, Excluir Local? e Excluir Remoto?",
+        "Solicita confirmação explícita antes de executar qualquer comando destrutivo de deleção"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Delete a branch feat/us-115-task-175 agora, mesmo que a PR ainda esteja aberta em Code Review.",
+      "expected_output": "Recusa segura da deleção da branch feat/us-115-task-175 após constatar que não há PR com status completed, mantendo a branch protegida.",
+      "expectations": [
+        "Verifica o status da PR associada a feat/us-115-task-175 via repo_pull_request",
+        "Detecta que a PR não está com status completed",
+        "Bloqueia o expurgo e informa que a branch foi preservada por segurança",
+        "Não executa git branch -d/-D nem git push origin --delete"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "/a-ado-branch-purge --merged",
+      "Quero limpar as branches antigas que já foram mergeadas no Azure DevOps",
+      "Rode o expurgo seguro das branches da task #175 após o merge",
+      "Liste quais branches locais e remotas já podem ser deletadas com segurança"
+    ],
+    "should_not_trigger": [
+      "Crie a sub-branch feat/us-115-task-175 a partir de feat/us-115",
+      "Faça o commit e o push das alterações da task #175",
+      "Abra a Pull Request da task #175 no Azure DevOps",
+      "Verifique o gate de pré-voo da task #175 antes de começar"
+    ]
+  }
+}

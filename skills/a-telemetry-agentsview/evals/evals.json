@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-telemetry-agentsview",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Extraia a tabela Markdown de telemetria FinOps e consumo de tokens da sessão ativa para anexar na Pull Request usando o a-telemetry-agentsview.",
+      "expected_output": "Execução do utilitário node .agents/skills/a-telemetry-agentsview/scripts/usage.mjs pr (ou --session antigravity:<SESSION_ID>) extraindo input tokens, cache_read, output tokens, peak_context, rollup de subagentes e custo estimado em USD formatados em tabela Markdown para PR.",
+      "expectations": [
+        "Executa o helper node .agents/skills/a-telemetry-agentsview/scripts/usage.mjs (ou pnpm run usage:pr) ou consulta get_session_usage no MCP agentsview",
+        "Extrai métricas de consumo de tokens (input, cache_read, output, peak_context), rollup de subagentes e custo estimado em USD",
+        "Formata a saída em tabela Markdown padronizada para Pull Requests ou linha executiva (--oneliner) para resumos no Azure Boards",
+        "Respeita a fronteira estrita: não abre Pull Request, não faz commits Git e não publica comentários diretamente no Azure Boards"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-telemetry-agentsview com --oneliner em um ambiente onde o binário agentsview não está instalado ou a sessão retorna exit code 2/3.",
+      "expected_output": "Acionamento automático de agentsview source sync em exit 2 quando aplicável e emissão do fallback gracioso não-bloqueante (n/a com exit 0) sem interromper a abertura da PR ou o resumo executivo.",
+      "expectations": [
+        "Suporta a flag --oneliner para gerar a linha executiva concisa consumida pelo a-ado-us-summary",
+        "Retorna fallback gracioso não-bloqueante (n/a com exit 0) quando o binário/servidor não está disponível ou retorna exit code 2/3",
+        "Permite sincronizar tarifas customizadas via pnpm run usage:setup em ~/.agentsview/config.toml"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Extraia o consumo de tokens, rollup de subagentes e custo estimado em USD da sessão via AgentsView",
+      "/a-telemetry-agentsview",
+      "Gere a tabela FinOps de uso de tokens para a Pull Request executando usage.mjs pr",
+      "Obtenha o oneliner de telemetria de tokens da sessão antigravity para o resumo da US"
+    ],
+    "should_not_trigger": [
+      "Extraia as métricas HEART de visualizações e scroll depth do Google Analytics 4",
+      "Consulte as issues e stack traces recentes de produção no Sentry MCP",
+      "Inspecione o status dos últimos deploys e logs 5xx na Vercel",
+      "Abra a Pull Request da branch atual no Azure DevOps"
+    ]
+  }
+}

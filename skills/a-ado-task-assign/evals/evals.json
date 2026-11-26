@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-task-assign",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Aloque a Task #175 para o desenvolvedor padrão e mude seu estado para Doing no Azure Boards usando o átomo a-ado-task-assign.",
+      "expected_output": "Resolução de PROJECT_NAME e ASSIGNEE na SSoT do workspace, execução de wit_work_item_write (action: update) no card #175 definindo /fields/System.AssignedTo e /fields/System.State = 'Doing', e retorno da confirmação determinística.",
+      "expectations": [
+        "Resolve PROJECT_NAME e ASSIGNEE padrão a partir do AGENTS.md ou SSoT do workspace",
+        "Executa wit_work_item_write com action update para o Work Item #175 no servidor MCP azure-devops",
+        "Define /fields/System.AssignedTo com o desenvolvedor padrão e /fields/System.State com o valor Doing",
+        "Retorna a mensagem de confirmação informando que a Task #175 foi alocada e está em estado Doing"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Atribua apenas o responsável e ative o status Doing da Task #176 via a-ado-task-assign sem criar branch nem auditar a codebase.",
+      "expected_output": "Atualização cirúrgica de System.AssignedTo e System.State = 'Doing' na Task #176 via wit_work_item_write, respeitando a fronteira estrita de não criar sub-branch, não auditar context drift e não validar a planning do card pai.",
+      "expectations": [
+        "Atualiza exclusivamente os campos /fields/System.AssignedTo e /fields/System.State = Doing via wit_work_item_write",
+        "Não cria sub-branch remota nem faz git checkout (papel do a-ado-branch-setup)",
+        "Não audita drift de contexto (papel do a-ado-context-audit) nem altera a descrição narrativa SMART da task"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Aloque a task #175 para o desenvolvedor padrão e altere seu estado para Doing no Azure Boards",
+      "/a-ado-task-assign 175",
+      "Atribua o System.AssignedTo da tarefa #176 e ative o status operacional Doing via MCP wit_work_item_write",
+      "Assuma a task #175 no Azure Boards mudando o responsável e o estado para Doing"
+    ],
+    "should_not_trigger": [
+      "Reescreva a descrição SMART da task #175 para refletir as decisões arquiteturais e mude para Done",
+      "Crie a sub-branch remota feat/us-115-task-175 e provisione a worktree local",
+      "Crie um novo Work Item do tipo feat no topo do Backlog do Azure Boards",
+      "Valide o pre-flight gate do card pai #115 antes de iniciar a implementação"
+    ]
+  }
+}

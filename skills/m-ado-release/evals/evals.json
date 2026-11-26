@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-ado-release",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Consolide e feche a release da User Story INVEST #115 para a branch main usando a molécula m-ado-release após todas as subtasks filhas estarem concluídas.",
+      "expected_output": "Inspeção da US #115 via wit_work_item confirmando que 100% das subtasks filhas (Hierarchy-Forward) estão em Done, invocação do átomo a-ado-release-bump (cálculo SemVer em package.json + CHANGELOG.md + commit chore(release) na branch feat/us-115), consolidação da telemetria FinOps por subtask via a-telemetry-agentsview (pnpm run usage:pr), abertura da PR Nível 2 (feat/us-115 -> main) via a-ado-pr-open com template main.md e card movido para Code Review / Pending, aguardando aprovação humana em 1 clique.",
+      "expectations": [
+        "Verifica via wit_work_item que 100% das subtasks SMART filhas da US #115 estão concluídas (Done) ou opera diretamente quando é Card Standalone sem subtasks",
+        "Aciona o átomo a-ado-release-bump para calcular a NEXT_VERSION SemVer, atualizar package.json e prepender a seção no CHANGELOG.md",
+        "Consolida a tabela de telemetria FinOps por subtask/sessão via a-telemetry-agentsview (pnpm run usage:pr)",
+        "Abre a PR Nível 2 para refs/heads/main via a-ado-pr-open usando o template main.md, move o card para Code Review / Pending e aguarda aprovação humana em 1 clique"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Tente rodar o m-ado-release para a User Story #115 enquanto a Subtask filha #177 ainda está com status Doing ou To Do.",
+      "expected_output": "Interrupção imediata de segurança (Hard Stop) no passo 1 ao detectar subtask filha pendente em To Do ou Doing, listando as tarefas pendentes sem executar o bump SemVer nem abrir a PR Nível 2 para a main.",
+      "expectations": [
+        "Inspeciona o estado de todas as relações Hierarchy-Forward (Child) do card pai #115 via wit_work_item",
+        "Interrompe imediatamente a execução (Hard Stop) quando qualquer subtask filha estiver em To Do ou Doing, reportando as tasks pendentes",
+        "Não faz merge automático descontrolado na main sem aprovação humana e CI verde"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Feche e consolide a release da User Story INVEST #115 abrindo a PR Nível 2 para a branch main",
+      "/m-ado-release 115",
+      "Valide que todas as subtasks da US #115 estão Done, gere o bump SemVer + CHANGELOG e abra a PR principal para a main",
+      "Prepare o fechamento da história #115 ou card standalone para produção com SemVer e template main.md"
+    ],
+    "should_not_trigger": [
+      "Despache as subtasks SMART em To Do da US #115 para subagentes concorrentes em worktrees",
+      "Crie a sub-branch remota feat/us-115-task-175 para iniciar o desenvolvimento da task",
+      "Decomponha a User Story #115 em tarefas SMART durante o planejamento",
+      "Apenas responda às threads de comentários de uma Pull Request em revisão"
+    ]
+  }
+}

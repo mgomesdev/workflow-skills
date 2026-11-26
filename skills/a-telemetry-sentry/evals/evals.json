@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-telemetry-sentry",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Consulte as issues não resolvidas e erros críticos de produção dos últimos 7 dias no Sentry usando o átomo a-telemetry-sentry.",
+      "expected_output": "Verificação de conectividade com o MCP sentry_sentry (ou SENTRY_AUTH_TOKEN), consulta das issues não resolvidas em environment production com a query 'is:unresolved issue.priority:[high, medium] level:[error, fatal]' ordenadas por frequência (sort: freq) e consolidação no bloco Snapshot Sentry contendo id, title, culprit, count e userCount.",
+      "expectations": [
+        "Verifica a conectividade do servidor MCP sentry_sentry ou a variável SENTRY_AUTH_TOKEN no ambiente",
+        "Lista issues não resolvidas no ambiente production com a query is:unresolved issue.priority:[high, medium] level:[error, fatal] ordenadas por frequência",
+        "Extrai id, title, culprit (rota/arquivo causador), count (eventos) e userCount (usuários impactados)",
+        "Formata o resultado no bloco padronizado Snapshot Sentry sem criar Work Items diretamente no Azure Boards"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-telemetry-sentry quando o servidor MCP sentry_sentry não estiver autenticado e a variável SENTRY_AUTH_TOKEN estiver ausente.",
+      "expected_output": "Emissão de relatório de alerta claro no passo 1 informando a falta do token/autenticação para revisão do desenvolvedor, respeitando a fronteira estrita de não consultar Vercel/GA4 nem calcular matriz de risco.",
+      "expectations": [
+        "Emite relatório de alerta informando a ausência de credencial autenticada do Sentry para revisão do desenvolvedor",
+        "Não consulta Vercel ou GA4 (delegado a a-telemetry-vercel e a-telemetry-ga4)",
+        "Não calcula matriz de risco nem cria cards no Azure DevOps (fronteira estrita)"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Consulte as issues de produção, taxas de exceções e stack traces recentes via Sentry MCP",
+      "/a-telemetry-sentry",
+      "Gere o Snapshot Sentry dos últimos 7 dias com os erros não resolvidos de prioridade high e medium",
+      "Extraia a telemetria de erros e exceções fatais de produção no Sentry"
+    ],
+    "should_not_trigger": [
+      "Extraia as métricas HEART de visualizações e scroll depth no Google Analytics 4",
+      "Inspecione o status dos últimos deploys de produção e logs 5xx na Vercel",
+      "Cruze as anomalias técnicas com o tráfego do GA4 para calcular a Matriz de Risco",
+      "Extraia o consumo de tokens e custo em USD da sessão no AgentsView"
+    ]
+  }
+}

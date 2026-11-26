@@ -1,0 +1,53 @@
+{
+  "skill_name": "a-ado-board-gate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Vou começar a programar o card #115 agora. Rode o pre-flight gate do Azure Boards para liberar o início do código.",
+      "expected_output": "Bloqueio imediato da implementação (GATE BLOCKED: Planning Required) caso o card #115 não possua subtasks SMART filhas vinculadas ou ainda esteja em Backlog/Refinament, orientando o usuário a concluir a Planning antes de codificar.",
+      "expectations": [
+        "Consulta o Work Item #115 no servidor MCP azure-devops usando wit_work_item com expand: All",
+        "Verifica a lista de relations em busca de vínculos System.LinkTypes.Hierarchy-Forward (Child)",
+        "Emite status BLOCKED (Planning Required) quando não há tasks filhas criadas",
+        "Não move o card para a coluna Developing nem inicia alterações de código"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Valide o gate de pré-voo da Task #175 (filha da US #115) no Azure Boards antes de iniciarmos a implementação.",
+      "expected_output": "Confirmação de que a US #115 possui Planning concluída com a Task #175 vinculada, auditoria de drift de contexto contra o repositório local, transição automática do card pai #115 para a coluna Developing (System.State = Doing) e da Task #175 para Doing via wit_work_item_write, retornando PASSED (Ready to Implement).",
+      "expectations": [
+        "Inspeciona o card pai #115 e a Task #175 via wit_work_item",
+        "Confirma que #175 consta nas relações Hierarchy-Forward (Child) do card #115",
+        "Audita o escopo da Task #175 contra o histórico do repositório e documentação para detectar context drift",
+        "Move o card pai #115 de Planning/To Develop para a coluna Developing (WEF_*_Kanban.Column) com System.State = Doing",
+        "Atualiza a Task #175 para System.State = Doing e emite confirmação Gate Passing"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Rode o a-ado-board-gate apenas com o ID da task 180 e verifique se parte do escopo dela já foi entregue em commits anteriores.",
+      "expected_output": "Descoberta automática do card pai via relação Hierarchy-Reverse (Parent) a partir da Task #180, validação da Planning no card pai e emissão do diagnóstico Context Drift Detected segregando os itens já implementados no código dos itens pendentes.",
+      "expectations": [
+        "Consulta a Task #180 primeiro via wit_work_item quando o ID do card pai não é informado",
+        "Extrai o ID da User Story pai através da relação System.LinkTypes.Hierarchy-Reverse (Parent)",
+        "Compara os entregáveis descritos na task com os arquivos reais da codebase e log de atividades",
+        "Reporta Context Drift Detected (Items Re-scoped) listando explicitamente o que já existe e o que falta implementar"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Verifique o gate de pré-voo do Azure Boards para a task #175 antes de codar",
+      "Valide se a US #115 já tem planning concluída e mova para Developing para começarmos a task #175",
+      "Rode o pre-flight check do board no card #140 e audite se há context drift com a codebase",
+      "/a-ado-board-gate 175"
+    ],
+    "should_not_trigger": [
+      "Quebre a história #115 em tarefas técnicas SMART e cadastre as subtasks filhas no Azure Boards",
+      "Crie a sub-branch remota feat/us-115-task-175 e faça o checkout na worktree local",
+      "Faça o commit semântico das alterações locais e envie o push para o repositório remoto",
+      "Abra a Pull Request da task #175 apontando para a branch da história"
+    ]
+  }
+}

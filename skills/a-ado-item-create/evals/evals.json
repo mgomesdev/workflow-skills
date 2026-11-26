@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-item-create",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Crie um novo card do tipo perf com título 'perf(images): otimizar carregamento LCP do Hero' no topo do Backlog do Azure Boards usando o a-ado-item-create.",
+      "expected_output": "Verificação prévia de duplicidade via wit_query (WIQL filtrando por System.Title e System.State <> Removed), consulta do menor Microsoft.VSTS.Common.StackRank ativo via wit_query para calcular topRank = minRank - 1000 (ou minRank / 2), criação do Work Item tipo perf via wit_work_item_write (action: create) em Markdown e retorno do ID criado no topo do Backlog.",
+      "expectations": [
+        "Executa consulta WIQL via wit_query para verificar duplicidade de System.Title com System.State <> Removed",
+        "Consulta o menor Microsoft.VSTS.Common.StackRank ativo via wit_query para posicionar o card no topo do Backlog",
+        "Calcula topRank (minRank - 1000 ou minRank / 2) e cria o card via wit_work_item_write com action create e workItemType compatível com Conventional Commits",
+        "Retorna a confirmação com ID do card, workItemType e StackRank priorizado"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Tente criar via a-ado-item-create um card 'fix(layout): corrigir overflow mobile' que já existe ativo no Backlog do Azure Boards.",
+      "expected_output": "Detecção do item existente na consulta WIQL de prevenção de duplicidade (wit_query), abortando a chamada de criação wit_work_item_write e retornando o ID do Work Item já existente.",
+      "expectations": [
+        "Consulta wit_query filtrando por System.TeamProject, System.Title e System.State <> Removed",
+        "Aborta a criação de novo card ao detectar item idêntico não removido e retorna o ID existente",
+        "Respeita a fronteira estrita: não consulta telemetria, não calcula matriz de risco e não altera branches Git"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Crie um novo Work Item do tipo feat no topo do Backlog do Azure Boards com validação de duplicidade WIQL",
+      "/a-ado-item-create",
+      "Cadastre um card fix no Azure Boards via wit_work_item_write calculando o StackRank para o topo da fila",
+      "Crie automaticamente o card chore em Markdown no Azure Boards verificando antes se o título já existe"
+    ],
+    "should_not_trigger": [
+      "Atualize a descrição SMART e mude o status da task #175 existente para Done no Azure Boards",
+      "Atribua a task #175 ao desenvolvedor padrão e mude o estado para Doing",
+      "Valide o pre-flight gate da US #115 antes de iniciar a codificação",
+      "Extraia as métricas do GA4 e calcule a matriz de risco das anomalias de produção"
+    ]
+  }
+}

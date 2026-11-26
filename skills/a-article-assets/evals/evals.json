@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-article-assets",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Gere a capa 1200x630 em código (Design-as-Code) para um novo artigo técnico de CI/CD & DevOps e referencie no frontmatter usando o a-article-assets.",
+      "expected_output": "Consulta aos tokens visuais em identidade-visual-agentic-curator.md, composição assimétrica 1200x630 em HTML/CSS renderizada via Playwright (node .agents/skills/a-article-assets/scripts/generate-cover.mjs) com coluna esquerda tipográfica (Outfit, JetBrains Mono, foto real do autor) e coluna direita com Blueprint 2D único (Quality Gates + métricas DORA), salvando em public/articles/<slug>/cover-<slug>.png e referenciando apenas no campo cover do frontmatter YAML sem repetir banner no corpo do Markdown.",
+      "expectations": [
+        "Consulta a paleta Dark Editorial (#121318, #3B82F6, #10B981, #F59E0B) e tipografia (Outfit e JetBrains Mono) em identidade-visual-agentic-curator.md",
+        "Constrói composição assimétrica 1200x630 em HTML/CSS com coluna esquerda autoral e coluna direita com Blueprint 2D único contextualizado ao tema do artigo",
+        "Renderiza a imagem PNG via Playwright executando node .agents/skills/a-article-assets/scripts/generate-cover.mjs e salva em public/articles/<slug>/cover-<slug>.png",
+        "Referencia a capa unicamente no campo cover do frontmatter YAML sem adicionar imagem ![Banner...] repetida no início do corpo do Markdown"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Crie uma capa com cubos 3D neon gerados por IA e insira ![Banner](/articles/post/cover.png) na primeira linha do texto do artigo em posts/.",
+      "expected_output": "Recusa de ilustrações 3D sintéticas/glassmorphism neon de IA em favor do padrão Blueprint 2D Flat em HTML/CSS via Playwright, e proibição estrita de inserir ![Banner...](...) no início do corpo do Markdown para que a leitura vá direto do ArticleTldr para a Introdução.",
+      "expectations": [
+        "Proíbe o uso de imagens 3D sintéticas de IA, glassmorphism ou cubos neon flutuantes",
+        "Garante que cada artigo tenha uma composição visual Blueprint 2D única na coluna direita sem reutilizar o mesmo molde genérico",
+        "Bloqueia a inserção de ![Banner...](...) no corpo do Markdown em posts/*.md, mantendo a imagem apenas no campo cover do frontmatter"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Gere a capa 1200x630 Blueprint 2D em HTML/CSS via Playwright para o novo artigo em public/articles/",
+      "/a-article-assets",
+      "Renderize o cover Open Graph Dark Editorial do post técnico usando generate-cover.mjs",
+      "Crie o ativo visual de capa 1200x630 do artigo sem repetir o banner no corpo do Markdown"
+    ],
+    "should_not_trigger": [
+      "Crie os diagramas Mermaid verticais Dark Mode para as seções do artigo técnico",
+      "Revise a gramática, pontuação e ortografia do post em Markdown",
+      "Transponha o tom de voz do artigo para a primeira pessoa autoral ('Eu')",
+      "Faça o commit semântico e push das alterações locais para o repositório remoto"
+    ]
+  }
+}

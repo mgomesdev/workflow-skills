@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-task-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Sincronize a descrição SMART da Task #175 no Azure Boards para refletir os caminhos de arquivos implementados e o link da PR aberta usando o a-ado-task-sync.",
+      "expected_output": "Leitura do estado atual da Task #175 via wit_work_item (expand: All), detecção de diferenças entre os blocos S, M, A, R, T planejados e os artefatos reais construídos, atualização cirúrgica de /fields/System.Description em Markdown via wit_work_item_write preservando a estrutura SMART e confirmação com rev atualizada.",
+      "expectations": [
+        "Lê o estado atual do Work Item #175 via wit_work_item com action get e expand All",
+        "Compara os blocos S, M, A, R, T planejados com os artefatos reais gerados no repositório e na Code Wiki",
+        "Atualiza /fields/System.Description via wit_work_item_write preservando a estrutura SMART em formato Markdown",
+        "Retorna o resumo dos campos sincronizados, estado atual e revisão rev do card"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Atualize o estado da Task #175 para Done no Azure Boards e registre na descrição SMART a referência da PR #90 concluída.",
+      "expected_output": "Inspeção da Task #175 via wit_work_item, inclusão da referência da PR #90 no bloco T (Temporal) da descrição SMART e atualização de /fields/System.Description e /fields/System.State = 'Done' via wit_work_item_write sem executar commits Git nem alterar PRs.",
+      "expectations": [
+        "Inclui a referência da PR aberta/concluída no bloco T (Temporal) da estrutura SMART",
+        "Atualiza /fields/System.State para Done (ou estado solicitado) em conjunto com System.Description via wit_work_item_write",
+        "Respeita a fronteira estrita: não executa comandos Git (commit/push) nem cria ou altera Pull Requests"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Sincronize a descrição SMART e o estado da task #175 no Azure Boards para refletir o código implementado",
+      "/a-ado-task-sync 175",
+      "Atualize o card da tarefa #175 no ADO com as decisões arquiteturais tomadas na sessão e mude o status para Done",
+      "Elimine o drift entre a descrição da task #176 no Azure Boards e os arquivos reais construídos via wit_work_item_write"
+    ],
+    "should_not_trigger": [
+      "Apenas audite se há context drift na task #175 sem alterar nenhum campo no Azure Boards",
+      "Publique um comentário de resumo executivo de 3 bullets na discussão da User Story pai #115",
+      "Faça o commit semântico e push das alterações locais para o repositório remoto",
+      "Crie um novo Work Item no topo do Backlog do Azure Boards"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-telemetry-risk",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Cruze o digest de telemetria onde há erros 5xx no Sentry/Vercel em uma rota crítica com >30% do tráfego do GA4 e gere a proposta de card usando o a-telemetry-risk.",
+      "expected_output": "Correlação entre a anomalia técnica (Sentry/Vercel) e o volume de tráfego (GA4), classificação imediata na Matriz de Risco como risk:high (Alto), definição do title em Conventional Commits e workItemType compatível (fix) e geração do body em Markdown no formato canônico (INVEST M1 ou SMART) com evidências empíricas sem gravar diretamente no Azure Boards.",
+      "expectations": [
+        "Cruza as rotas com erro no Sentry/Vercel com o volume de tráfego e conversão medidos no GA4",
+        "Classifica anomalias bloqueantes ou falhas 5xx em rotas com > 30% do tráfego total como risk:high na Matriz de Risco",
+        "Estrutura a proposta de card com title Conventional Commits, tag de risco (risk:low | risk:medium | risk:high), type e body em formato INVEST M1 ou SMART",
+        "Respeita a fronteira estrita: não consulta APIs externas diretamente nem envia os cards para o Azure Boards (papel do a-ado-item-create)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Avalie no a-telemetry-risk um snapshot com queda de conversão no CTA de download de CV e um ajuste cosmético de UI em página de baixo tráfego.",
+      "expected_output": "Classificação da queda de conversão em CTA como risk:medium (Oportunidade / Improvement estruturada em template INVEST M1) e do ajuste cosmético sem bloqueio de navegação como risk:low (Agente Autônomo).",
+      "expectations": [
+        "Classifica queda em conversão de CTA ou refatoração de componente existente como risk:medium",
+        "Classifica correções cosméticas de UI ou ajustes de copy/SEO em páginas de baixo tráfego como risk:low",
+        "Seleciona o template INVEST M1 ([V], [I], [N], [E], [S], [T]) para novas oportunidades/jornadas e SMART (S, M, A, R, T) para correções pontuais"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Cruze as anomalias técnicas com os dados do GA4, calcule a Matriz de Risco e gere a proposta de card INVEST/SMART",
+      "/a-telemetry-risk",
+      "Classifique o digest de telemetria em risk:low, risk:medium ou risk:high e formate os cartões propostos",
+      "Correlacione os erros do Sentry e Vercel com o tráfego do GA4 para priorizar os cards por risco"
+    ],
+    "should_not_trigger": [
+      "Cadastre o card proposto no topo do Backlog do Azure Boards via wit_work_item_write",
+      "Consulte diretamente a Data API do Google Analytics 4 para extrair page_views",
+      "Liste as issues abertas diretamente no servidor MCP do Sentry",
+      "Faça o commit semântico e push das alterações locais para o origin"
+    ]
+  }
+}

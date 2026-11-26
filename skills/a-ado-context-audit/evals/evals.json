@@ -1,0 +1,41 @@
+{
+  "skill_name": "a-ado-context-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audite o contexto da Task #175 (filha da US #115) com o a-ado-context-audit para verificar se há entregas prévias na codebase ou no knowledge/log.md.",
+      "expected_output": "Leitura da descrição e critérios SMART da Task #175 via wit_work_item no MCP azure-devops, varredura de knowledge/log.md e da árvore do repositório (.agents/skills/, src/, knowledge/wiki/) e emissão do diagnóstico determinístico de sanidade de contexto sem alterar Work Items nem criar branches.",
+      "expectations": [
+        "Consulta a descrição e os critérios de aceitação SMART da Task #175 via wit_work_item no MCP azure-devops",
+        "Verifica entregas e commits recentes da User Story pai #115 em knowledge/log.md e git log",
+        "Cruza os entregáveis planejados com os arquivos reais da codebase em src/, public/, .agents/ e knowledge/wiki/",
+        "Emite o diagnóstico determinístico (Context: Fresh & In Sync ou Context Drift Detected) sem alterar o card no Azure Boards"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-ado-context-audit em uma task cujo componente em src/ e entrada em knowledge/log.md já foram entregues por uma tarefa irmã anterior.",
+      "expected_output": "Identificação dos artefatos já existentes em src/ e registrados em knowledge/log.md, emitindo Context Drift Detected (Items Re-scoped) com segregação explícita entre os itens já construídos (para evitar retrabalho) e o escopo remanescente.",
+      "expectations": [
+        "Detecta que arquivos ou componentes descritos na task já existem na árvore da codebase e constam em knowledge/log.md",
+        "Emite o status Context Drift Detected (Items Re-scoped)",
+        "Lista explicitamente os itens já implementados e segrega apenas o escopo real pendente para execução",
+        "Respeita a fronteira estrita: não atualiza a descrição do card no ADO (papel do a-ado-task-sync) nem cria branches"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Audite se há context drift entre o escopo planejado da task #175 e a árvore real da codebase",
+      "/a-ado-context-audit 175",
+      "Inspecione a task #176 e confronte com o knowledge/log.md para identificar itens já construídos ou obsoletos",
+      "Verifique a sanidade de contexto da tarefa #175 antes de planejar a implementação para evitar retrabalho"
+    ],
+    "should_not_trigger": [
+      "Atualize a descrição SMART e sincronize o status da task #175 para Done no Azure Boards",
+      "Atribua a task #175 ao desenvolvedor padrão e mude o estado para Doing",
+      "Crie a sub-branch remota feat/us-115-task-175 e vincule ao card no ADO",
+      "Audite a integridade estrutural de links órfãos e frontmatter YAML da LLM Wiki"
+    ]
+  }
+}

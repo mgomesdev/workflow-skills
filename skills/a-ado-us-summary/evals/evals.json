@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-us-summary",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Publique o resumo executivo da Subtask #175 (PR #90) na discussão do Card Principal INVEST #115 no Azure Boards usando o a-ado-us-summary.",
+      "expected_output": "Identificação do card pai #115, síntese executiva concisa de 3 a 4 bullet points focados no valor entregue, coleta da linha de telemetria FinOps via pnpm run usage:pr -- --oneliner (a-telemetry-agentsview) e publicação via wit_work_item_comment_write (action: add, workItemId: 115, format: Markdown, text: <conteúdo>).",
+      "expectations": [
+        "Identifica o Card Pai #115 a partir da branch ativa feat/us-115-task-175 ou do campo System.Parent",
+        "Estrutura o comentário em Markdown com 3 a 4 bullet points executivos concisos referenciando a Subtask #175 e a PR #90",
+        "Coleta a linha de telemetria FinOps (AgentsView) executando pnpm run usage:pr com --oneliner",
+        "Publica o comentário no card #115 via wit_work_item_comment_write usando estritamente o campo text (e não comment) com format Markdown"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-ado-us-summary para registrar a entrega da Task #176 na US #115 quando o AgentsView não estiver instalado no ambiente local.",
+      "expected_output": "Utilização do fallback automático não-bloqueante n/a da telemetria FinOps, publicação do comentário executivo na aba Discussion da US #115 via wit_work_item_comment_write (campo text) e respeito à fronteira estrita sem alterar System.Description nem fazer commits Git.",
+      "expectations": [
+        "Aplica o fallback automático não-bloqueante n/a quando a telemetria do AgentsView não está disponível",
+        "Envia o payload para wit_work_item_comment_write com action add, workItemId 115 e propriedade text",
+        "Respeita a fronteira estrita: não altera o campo System.Description do card INVEST nem executa commits Git"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Publique o comentário de resumo executivo da subtask #175 e PR #90 na discussão da User Story pai #115",
+      "/a-ado-us-summary 115 175",
+      "Adicione na aba Discussion do card principal INVEST #115 o resumo conciso da entrega via wit_work_item_comment_write",
+      "Registre o resumo executivo com telemetria FinOps no card pai #115 do Azure Boards"
+    ],
+    "should_not_trigger": [
+      "Reescreva o campo System.Description e mude o estado da task #175 para Done no Azure Boards",
+      "Responda às threads de comentários de Code Review dentro da Pull Request #86",
+      "Abra uma nova Pull Request da sub-branch atual para a branch da história",
+      "Gere a narrativa de Daily Standup ou Weekly Showcase para o NotebookLM"
+    ]
+  }
+}

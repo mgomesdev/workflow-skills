@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-git-push",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Suba os commits locais já criados na branch feat/us-115-task-175 para o repositório remoto origin usando o a-ado-git-push.",
+      "expected_output": "Inspeção da branch atual via git branch --show-current (feat/us-115-task-175), verificação de commits locais pendentes via git status/git log, execução de git push -u origin feat/us-115-task-175 e retorno do status do upstream e último commit enviado sem criar novos commits nem abrir PR.",
+      "expectations": [
+        "Verifica a branch atual via git branch --show-current garantindo que segue o padrão feat/us-<US_ID>-task-<TASK_ID> ou feat/us-<US_ID>",
+        "Inspeciona commits locais pendentes de envio usando git status ou git log origin/<branch>..HEAD",
+        "Executa git push -u origin feat/us-115-task-175 estabelecendo o upstream tracking (-u)",
+        "Retorna o resumo de sincronização remota (Branch, Status do Upstream e Último Commit enviado)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Execute o a-ado-git-push estando posicionado diretamente na branch main para enviar commits locais direto para produção.",
+      "expected_output": "Bloqueio imediato (Trava de Proteção) ao detectar que a branch atual é a main/master, recusando o git push direto por governança de Branch Policies e mantendo a fronteira estrita.",
+      "expectations": [
+        "Detecta que a branch ativa é main ou master via git branch --show-current",
+        "Bloqueia imediatamente a execução do push direto para a branch protegida main",
+        "Respeita a fronteira estrita: não executa git add, não cria commits e não abre Pull Request"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Suba os commits locais já criados da branch feat/us-115-task-175 para o origin com upstream tracking",
+      "/a-ado-git-push",
+      "Faça apenas o git push -u origin da sub-branch ativa para o repositório remoto no Azure DevOps",
+      "Envie os commits pendentes da branch atual para o servidor remoto sem criar novos commits"
+    ],
+    "should_not_trigger": [
+      "Adicione os arquivos modificados ao stage e crie um commit semântico local",
+      "Abra a Pull Request da sub-branch atual para a branch da história no Azure DevOps",
+      "Expurgue e delete as branches remotas das tarefas cujas PRs já foram mergeadas",
+      "Crie a sub-branch remota feat/us-115-task-175 via MCP repo_create_branch"
+    ]
+  }
+}

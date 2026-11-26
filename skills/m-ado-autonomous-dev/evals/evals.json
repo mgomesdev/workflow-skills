@@ -1,0 +1,50 @@
+{
+  "skill_name": "m-ado-autonomous-dev",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Execute o Inner-Loop autônomo (m-ado-autonomous-dev) para a Subtask SMART #175 (filha da US #115) com risco inicial baixo (risk:low), mas que durante a implementação modificou o arquivo sensível package.json (scripts) e azure-pipelines.yml.",
+      "expected_output": "Isolamento da execução em .worktrees/task-175 (sem checkout na raiz main), pré-voo via a-ado-board-gate e a-ado-branch-setup, desenvolvimento TDD + Auto-Learn na Living Wiki (a-wiki-auditor), validação 100% verde em pnpm run quality-gate:full antes de 1 único git push final, detecção de arquivos sensíveis via git diff --name-only contra matriz-risco-governanca.md disparando Escalonamento Sem Parada para risk:medium, abertura da PR Nível 1 com autoComplete: false, atribuição de revisor humano, fechamento da thread Vercel (status 4) e transição do card para Pending.",
+      "expectations": [
+        "Opera estritamente em Git Worktree isolada dentro de .worktrees/task-175 sem executar git checkout na raiz do projeto",
+        "Executa Auto-Learn na Living Wiki (a-wiki-auditor) e valida pnpm run quality-gate:full 100% verde antes de enviar exatamente 1 push único final",
+        "Inspeciona git diff --name-only contra a Tabela Canônica de Arquivos Sensíveis em matriz-risco-governanca.md e aciona Escalonamento Sem Parada para risk:medium",
+        "Abre a PR via a-ado-pr-open com autoComplete: false, atribui revisor humano obrigatório, fecha a thread da Vercel (status 4) e move o card para Pending"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o m-ado-autonomous-dev para um Card Standalone simples (sem subtasks filhas, target = main) classificado como risk:low que não tocou em nenhum arquivo sensível (apenas o bump de version do release).",
+      "expected_output": "Provisionamento em .worktrees/card-<ID>, execução obrigatória do a-ado-release-bump (incrementando version no package.json e prependendo CHANGELOG.md sem disparar escalonamento por sensibilidade de dependências), push único após quality-gate:full verde, abertura da PR para main com autoComplete: true (deleteSourceBranch: false), fechamento da thread Vercel (status 4) e avanço do card para Ready to Production.",
+      "expectations": [
+        "Aciona obrigatoriamente o átomo a-ado-release-bump (SemVer em package.json + CHANGELOG.md) quando o card é Standalone apontando direto para a main",
+        "Não dispara escalonamento de risco quando a única modificação no package.json é o bump do campo version gerado pelo a-ado-release-bump",
+        "Configura auto-merge na PR de severidade baixa (autoComplete: true, deleteSourceBranch: false) e move o Card Standalone para Ready to Production (ou Done em Subtask SMART)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Tente iniciar o m-ado-autonomous-dev para a Subtask #177 (Onda 2 da US #115) enquanto a Subtask predecessora #175 (Onda 1, que modifica os mesmos contratos de skills) ainda está em Doing e com PR Nível 1 aberta sem merge na feat/us-115.",
+      "expected_output": "Bloqueio imediato no pré-voo (a-ado-board-gate / Dependency & Wave Gate) ao detectar que a Task #177 possui dependência/sobreposição de arquivos com a Task #175 que ainda não está Done nem mergeada (completed) em origin/feat/us-115, abortando a criação da worktree .worktrees/task-177 para evitar conflitos e redundância.",
+      "expectations": [
+        "Verifica no pré-voo (a-ado-board-gate) relações de dependência (Predecessor) e sobreposição de arquivos-alvo com subtasks irmãs da mesma US",
+        "Valida se a task predecessora #175 já está em System.State == Done e se sua PR Nível 1 foi formalmente mergeada (completed) em origin/feat/us-115",
+        "Aborta o provisionamento da worktree (.worktrees/task-177) emitindo GATE BLOCKED: Unmet Dependency on Task #175 para prevenir conflito de merge e retrabalho"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Execute o Inner-Loop de desenvolvimento autônomo escalonado por risco na worktree para a task #175",
+      "/m-ado-autonomous-dev 175",
+      "Implemente a subtask #175 de ponta a ponta com worktree isolada em .worktrees/, Auto-Learn, push único e governança por risco",
+      "Rode a molécula de desenvolvimento autônomo no card standalone #185 até a abertura da PR com avaliação da matriz de risco"
+    ],
+    "should_not_trigger": [
+      "Apenas faça o commit semântico e push das alterações locais já prontas",
+      "Expurgue manualmente as branches locais e remotas das tarefas já mergeadas",
+      "Quebre a User Story #115 em tarefas SMART durante a sessão de Planning",
+      "Compile o digest de telemetria de produção do Sentry, Vercel e GA4"
+    ]
+  }
+}

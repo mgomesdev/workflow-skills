@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-article-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Faça uma auditoria crítica editorial e diagnóstico visual no artigo em posts/ usando o átomo a-article-reviewer.",
+      "expected_output": "Consulta às diretrizes em diretrizes-editoriais-tom-de-voz.md e identidade-visual-agentic-curator.md, inspeção dos 4 eixos de diagnóstico (Completude de Engenharia, Densidade/Poluição Visual, Coerência de Contratos e Diagramas, Linguagem/Desintoxicação de IA) e emissão do parecer estruturado nas 3 seções obrigatórias: O que remover ou enxugar, O que passou batido e vale adicionar, e Diagnóstico Visual e Sugestões de Imagens.",
+      "expectations": [
+        "Consulta as diretrizes editoriais e visuais em diretrizes-editoriais-tom-de-voz.md e identidade-visual-agentic-curator.md",
+        "Avalia a completude de engenharia (cumprimento do título e tldr, decisões de telemetria, testes, tratamento de erros)",
+        "Audita o nível de poluição visual, autenticidade de imagens (rejeitando ilustrações genéricas de IA) e harmonia numérica entre texto e diagramas Mermaid",
+        "Estrutura a saída exatamente nas 3 seções obrigatórias: O que remover ou enxugar, O que passou batido e vale adicionar, e Diagnóstico Visual e Sugestões de Imagens"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Revise criticamente um rascunho de artigo que vaza números de cards internos (#138, PR #66, portas 3100-3600) e tem dois diagramas Mermaid consecutivos sem texto entre eles.",
+      "expected_output": "Apontamento do vazamento de identificadores internos do repositório (#138, PR #66, portas 3100-3600) e termos da Blacklist no eixo de Linguagem/Abstração, além da sinalização de sobrecarga de blocos visuais empilhados sem reflexão textual intermediária na seção O que remover ou enxugar / Diagnóstico Visual.",
+      "expectations": [
+        "Identifica vazamento de identificadores internos do repositório (#138, PR #66, portas 3100-3600) incompreensíveis para leitores externos",
+        "Aponta sobrecarga e poluição visual quando há dois diagramas ou imagens consecutivos sem reflexão textual intermediária",
+        "Verifica se o relato mantém a 1ª pessoa autoral ('Eu') e conformidade dos diagramas com o padrão Sketch / Blueprint Dark"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Faça uma análise crítica e auditoria editorial do artigo técnico para ver o que passou batido e avaliar a poluição visual",
+      "/a-article-reviewer",
+      "Inspecione o post em busca de discrepâncias entre texto e diagramas, vazamento de IDs internos e equilíbrio de imagens",
+      "Rode o diagnóstico editorial nos 4 eixos do artigo antes da publicação"
+    ],
+    "should_not_trigger": [
+      "Corrija apenas erros de ortografia, crase e pontuação gramatical no arquivo Markdown",
+      "Renderize o arquivo PNG 1200x630 de capa Open Graph via Playwright",
+      "Faça o commit semântico e push das alterações locais para o origin",
+      "Abra a Pull Request da branch atual no Azure DevOps"
+    ]
+  }
+}

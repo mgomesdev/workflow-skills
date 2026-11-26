@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-brief-curator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Gere o briefing técnico e guia de estudo com referências externas e internas clicáveis para a Task #175 antes de codar usando o a-brief-curator.",
+      "expected_output": "Leitura do escopo da Task #175 via wit_work_item, inspeção real da codebase (read_file/grep) e package.json para extrair versões pinadas e números de linha exatos, e emissão do Guia de Estudo com Referências Externas (URLs diretas version-matched), Referências Internas (file:///...#LXX-LYY em src/ e knowledge/wiki/) no formato de 5 bullets (Referência, O que é, Para que serve, Onde será aplicado, Como validar) e Perguntas Críticas para pair programming.",
+      "expectations": [
+        "Inspeciona package.json e os arquivos reais do projeto com read_file ou grep para obter versões exatas pinadas e números de linha reais",
+        "Estrutura cada recurso no formato canônico obrigatório contendo: Referência/Documentação, O que é, Para que serve, Onde será aplicado e Como validar",
+        "Formata referências internas (src/ e knowledge/wiki/) com links clicáveis file:/// e âncoras de linha exatas (#LXX-LYY)",
+        "Inclui a seção final de Perguntas Críticas para o Desenvolvedor Fazer à IA durante o pair programming"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Monte um brief técnico de pré-voo para uma feature que utiliza APIs do Next.js 16 e validação com Zod no repositório.",
+      "expected_output": "Conferência das versões exatas no package.json, mapeamento da documentação oficial version-matched e dos guias locais em node_modules/next/dist/docs/, além dos arquivos internos em src/ e diretrizes em knowledge/wiki/ sem alterar código da feature.",
+      "expectations": [
+        "Referencia a documentação version-matched das bibliotecas conforme o package.json e os guias locais em node_modules/next/dist/docs/ para Next.js 16+",
+        "Separa o relatório em Referências Externas, Referências Internas e Perguntas Críticas",
+        "Respeita a fronteira estrita: entrega o guia de estudo sem modificar arquivos de código da feature nem alterar Work Items"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Monte o briefing técnico e material de estudo com links clicáveis e linhas de código antes de implementar a task #175",
+      "/a-brief-curator 175",
+      "Liste todas as referências externas (docs oficiais) e internas (file:///...#L...) necessárias para desenvolver esta feature",
+      "Me passe o guia de estudo de pair programming explicando o que é, para que serve, onde será aplicado e como validar cada recurso da task"
+    ],
+    "should_not_trigger": [
+      "Implemente o código da feature diretamente e faça o commit semântico na branch",
+      "Audite a integridade estrutural de links órfãos e frontmatter YAML da LLM Wiki",
+      "Valide o pre-flight gate do Azure Boards e mova a US #115 para Developing",
+      "Gere a narrativa de Daily Standup a partir dos últimos commits"
+    ]
+  }
+}

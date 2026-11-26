@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-telemetry-vercel",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Inspecione o status dos deploys mais recentes de produção, falhas de build e erros de runtime 5xx na Vercel usando o a-telemetry-vercel.",
+      "expected_output": "Checagem de credenciais (MCP vercel ou VERCEL_TOKEN/VERCEL_PROJECT_ID), consulta aos deploys de produção (target: production) em https://api.vercel.com/v6/deployments e logs de runtime recentes, e formatação do bloco Snapshot Vercel com Status do Deploy Ativo (READY/ERROR), Falhas de Build Recentes e Erros de Runtime 5xx.",
+      "expectations": [
+        "Verifica a disponibilidade do MCP vercel ou das variáveis VERCEL_TOKEN e VERCEL_PROJECT_ID",
+        "Consulta os deploys de produção (target: production) e logs de execução recentes",
+        "Extrai o estado do deploy (READY, BUILDING, ERROR), falhas de build recentes e erros HTTP 5xx em runtime",
+        "Formata o resultado no bloco padronizado Snapshot Vercel sem criar Work Items diretamente no Azure Boards"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rode o a-telemetry-vercel quando o MCP vercel e as variáveis VERCEL_TOKEN / VERCEL_PROJECT_ID não estiverem configurados no ambiente.",
+      "expected_output": "Emissão de fallback estruturado no passo 1 reportando a ausência de credenciais da Vercel para revisão do desenvolvedor, respeitando a fronteira estrita de não consultar Sentry/GA4 nem calcular matriz de risco.",
+      "expectations": [
+        "Reporta fallback estruturado quando o MCP vercel ou VERCEL_TOKEN/VERCEL_PROJECT_ID não estão configurados",
+        "Não consulta Sentry ou GA4 (delegado a a-telemetry-sentry e a-telemetry-ga4)",
+        "Não calcula matriz de risco nem cria cards no Azure DevOps (fronteira estrita)"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Inspecione o status dos últimos deploys de produção, falhas de build e logs 5xx via Vercel MCP",
+      "/a-telemetry-vercel",
+      "Gere o Snapshot Vercel dos últimos 7 dias com o estado do deploy ativo e métricas de edge/runtime",
+      "Extraia a telemetria de infraestrutura e erros HTTP 500/504 dos deployments de produção na Vercel"
+    ],
+    "should_not_trigger": [
+      "Consulte as issues de exceções não resolvidas e stack traces no Sentry MCP",
+      "Extraia as métricas HEART de page_view e scroll depth no Google Analytics 4",
+      "Cruze as anomalias técnicas com os dados do GA4 para calcular a Matriz de Risco",
+      "Extraia o consumo de tokens e custo em USD da sessão no AgentsView"
+    ]
+  }
+}

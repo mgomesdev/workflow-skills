@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-article-curator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Execute a esteira editorial completa (m-article-curator) para curar, diagramar e gerar a capa de um novo artigo técnico em posts/ e o resumo para o LinkedIn.",
+      "expected_output": "Orquestração sequencial dos 5 átomos especializados: (1) a-article-reviewer (crítica editorial e diagnóstico visual), (2) a-article-proofread (revisão gramatical e ortográfica), (3) a-article-voice (1ª pessoa 'Eu', Linguagem Onipresente da Wiki, títulos H2/H3 dinâmicos e resumo LinkedIn), (4) a-article-diagrams (diagramas Mermaid verticais formato Sketch / Blueprint Dark) e (5) a-article-assets (capa 1200x630 Blueprint 2D em public/articles/<slug>/ sem banner repetido no corpo), consolidando o artigo em posts/<slug>.md após aprovação do autor.",
+      "expectations": [
+        "Encadeia na sequência determinística os 5 átomos: a-article-reviewer, a-article-proofread, a-article-voice, a-article-diagrams e a-article-assets",
+        "Garante títulos ## (H2) e ### (H3) dinâmicos derivados da compreensão do contexto (sem rótulos fixos como Contexto:, Análise:, Conclusão)",
+        "Consolida o artigo Markdown em posts/<slug>.md com diagramas Mermaid verticais no formato Sketch Dark e tom de voz na 1ª pessoa ('Eu')",
+        "Salva a capa 1200x630 Blueprint 2D e ativos em public/articles/<slug>/ sem repetir banner decorativo no início do corpo do Markdown"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Valide o checklist final de entrega de um artigo técnico na molécula m-article-curator antes de publicar.",
+      "expected_output": "Verificação dos itens obrigatórios do Checklist de Entrega: estrutura narrativa NN/g com Pirâmide Invertida (references/article-template.md), proofread linguístico, conformidade com as Seções 3.1 e 3.2 de diretrizes-editoriais-tom-de-voz.md, diagramas Mermaid modulares, capa 1200x630 em public/articles/<slug>/ e autorização explícita do autor.",
+      "expectations": [
+        "Verifica a conformidade com o template canônico references/article-template.md (9 etapas narrativas e Pirâmide Invertida)",
+        "Confirma que a Linguagem Onipresente da Wiki (diretrizes-editoriais-tom-de-voz.md) e o resumo para o feed do LinkedIn foram aplicados",
+        "Aguarda a revisão e aprovação explícita do autor no gate final antes de dar o artigo por fechado"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Execute a esteira editorial completa para revisar, aplicar tom de voz, criar diagramas Mermaid e gerar a capa do novo artigo em posts/",
+      "/m-article-curator",
+      "Orquestre a curadoria completa do post técnico da série The Agentic Curator do rascunho até a capa e resumo de LinkedIn",
+      "Rode a molécula editorial encadeando reviewer, proofread, voice, diagrams e assets no artigo"
+    ],
+    "should_not_trigger": [
+      "Corrija apenas um erro pontual de ortografia e acentuação no texto sem rodar o restante da esteira",
+      "Gere a narrativa de Daily Standup a partir dos últimos commits da sprint",
+      "Execute o Inner-Loop de desenvolvimento de código na worktree para a task #175",
+      "Quebre a User Story #115 em tarefas SMART no Azure Boards"
+    ]
+  }
+}

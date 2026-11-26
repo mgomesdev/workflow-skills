@@ -1,0 +1,40 @@
+{
+  "skill_name": "a-ado-release-bump",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Prepare o bump SemVer e atualize o CHANGELOG.md para a release da User Story #115 na branch feat/us-115 usando o átomo a-ado-release-bump.",
+      "expected_output": "Localização da última Git Tag via git describe --tags --abbrev=0, leitura dos commits convencionais entre LAST_TAG e HEAD, consulta da US #115 via wit_work_item no MCP azure-devops, cálculo da NEXT_VERSION (minor para feat, patch para fix/refactor/perf, major para BREAKING CHANGE), atualização de package.json, prepend do bloco de release em CHANGELOG.md com subtítulos H3 dinâmicos e commit chore(release): bump v<NEXT_VERSION> e changelog (#115).",
+      "expectations": [
+        "Localiza a última Git Tag com git describe --tags --abbrev=0 e lista os commits convencionais até o HEAD",
+        "Consulta os detalhes da User Story #115 e subtasks filhas via wit_work_item no MCP azure-devops",
+        "Calcula a NEXT_VERSION seguindo as regras SemVer (feat -> minor, fix/perf/refactor -> patch, BREAKING CHANGE -> major) e atualiza o campo version no package.json",
+        "Insere a nova seção no topo do CHANGELOG.md com subtítulos H3 dinâmicos baseados no contexto e cria o commit chore(release): bump v<NEXT_VERSION> e changelog (#115)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Execute o a-ado-release-bump para um card standalone fix/card-185 contendo apenas commits fix(...) e refactor(...) sem nenhuma feat ou breaking change.",
+      "expected_output": "Classificação determinística do bump como patch a partir dos commits fix/refactor desde a última tag, incremento patch da versão atual do package.json, geração de subtítulos H3 naturais no CHANGELOG.md (sem subtítulos fixos engessados) e respeito à fronteira estrita (não abre PR nem cria Git Tag remota).",
+      "expectations": [
+        "Classifica o incremento SemVer como patch quando os commits desde a última tag contêm apenas fix, perf ou refactor",
+        "Gera subtítulos H3 dinâmicos no CHANGELOG.md derivados do problema resolvido, evitando subtítulos fixos engessados",
+        "Respeita a fronteira estrita: não abre a Pull Request (papel do a-ado-pr-open) e não cria a Git Tag remota"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Calcule o bump SemVer, atualize o package.json e gere a entrada no CHANGELOG.md para a US #115 antes da PR para a main",
+      "/a-ado-release-bump 115",
+      "Rode o preparo de release para classificar os Conventional Commits desde a última tag e atualizar o CHANGELOG.md",
+      "Atualize a versão do package.json e prependa a seção de release da história #115 no CHANGELOG"
+    ],
+    "should_not_trigger": [
+      "Abra a Pull Request Nível 1 da sub-branch feat/us-115-task-175 para a branch feat/us-115",
+      "Expurgue as branches locais e remotas das tarefas já concluídas e mergeadas",
+      "Publique o comentário de resumo executivo da subtask na discussão da US #115",
+      "Valide o pre-flight gate do Azure Boards para liberar o início do código da task #175"
+    ]
+  }
+}

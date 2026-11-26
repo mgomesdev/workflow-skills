@@ -1,0 +1,40 @@
+{
+  "skill_name": "m-invest-smart",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Conduza a Fase 1 (Criação) e Fase 2B (Refinamento) de uma nova história de usuário seguindo os 3 Cs e os critérios INVEST com observabilidade de produto integrada usando a molécula m-invest-smart.",
+      "expected_output": "Entrevista estruturada fazendo uma pergunta por turno (po-idea), validação silenciosa dos 6 critérios INVEST (check-invest), estruturação do Card Inicial M1 ([V], [I], [N], [E], [S], [T] via assets/format-card-m1.md) e evolução na Fase 2B para o Card Refinado M2 (assets/format-card-m2.md) com Critérios de Aceitação BDD (Dado/Quando/Então), estados de tela (Default, Loading, Erro, Vazio) e métricas de observabilidade HEART.",
+      "expectations": [
+        "Conduz a extração guiada fazendo uma pergunta por turno e valida silenciosamente a conformidade com os 6 critérios INVEST (Bill Wake)",
+        "Estrutura o Card Inicial M1 em [V], [I], [N], [E], [S], [T] (assets/format-card-m1.md) e o Card Refinado M2 (assets/format-card-m2.md) com Critérios de Aceitação BDD",
+        "Mapeia os 4 estados de tela na Fase 2A (Default, Loading, Erro, Vazio) e integra hipóteses de observabilidade de produto (HEART: Adoção, Engajamento, Conversão, Performance)",
+        "Consome a base de conhecimento via a-wiki-auditor e a-brief-curator quando a flag --with-docs está ativa"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Execute a Fase 3 (Planning) no m-invest-smart para decompor o Card Refinado M2 #115 em tarefas técnicas SMART e cadastrá-las no Azure Boards.",
+      "expected_output": "Decomposição da história #115 em subtarefas técnicas autônomas no template SMART (assets/task-smart.md) cobrindo 100% dos Critérios de Aceitação e cenários de risco/falha, aplicando a diretriz anti-hiperfragmentação e criando os itens filhos estritamente com workItemType: 'Task' (wit_work_item_write action: add_child).",
+      "expectations": [
+        "Quebra a história em tarefas técnicas autônomas no padrão SMART (assets/task-smart.md) garantindo 100% de cobertura dos Critérios de Aceitação e cenários de falha/risco",
+        "Aplica a diretriz anti-hiperfragmentação para consolidar fatias verticais sequenciais sem criar micro-tasks desnecessárias",
+        "Cria as subtarefas filhas estritamente com o tipo workItemType: Task (action: add_child no Azure Boards), nunca usando tipos de história como feat ou chore para itens filhos"
+      ]
+    }
+  ],
+  "trigger_tests": {
+    "should_trigger": [
+      "Conduza o refinamento INVEST e a planning quebrando a história #115 em subtasks técnicas SMART",
+      "/m-invest-smart --with-docs",
+      "Me ajude a criar um Card Inicial M1 INVEST com critérios de aceitação BDD e observabilidade HEART",
+      "Faça a Planning (Fase 3) da User Story #115 gerando as tasks SMART filhas no Azure Boards"
+    ],
+    "should_not_trigger": [
+      "Valide apenas o pre-flight gate do Azure Boards para verificar se a US #115 já está na coluna Developing",
+      "Execute o Inner-Loop de implementação de código na worktree para a task #175",
+      "Faça o commit semântico e push das alterações locais para o origin",
+      "Feche a release da User Story #115 abrindo a PR Nível 2 para a main"
+    ]
+  }
+}
