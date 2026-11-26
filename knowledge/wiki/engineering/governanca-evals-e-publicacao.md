@@ -48,3 +48,11 @@ O repositório mantém dois portões automatizados:
   ```bash
   npx skills add mgomesdev/workflow-skills --all -y
   ```
+  > **Higienização no Consumidor:** O CLI `vercel-labs/skills` pode criar diretórios auxiliares de symlink para outros agentes (ex.: `.claude/`, `agent/`). Remova pastas auxiliares indesejadas antes de commitar no projeto consumidor para manter versionados apenas `.agents/skills/` e `skills-lock.json`.
+
+---
+
+## 🎨 4. Documentação Visual & Revisão Incremental
+
+1. **Inspeção Visual Obrigatória de Assets Design-as-Code (`assets/*.png`):** Ao gerar ou atualizar diagramas/banners arquiteturais para o `README.md` via Playwright (HTML/CSS + SVG), o agente DEVE inspecionar o PNG resultante (`read_file`) antes do commit/push para validar ausência de cortes de viewport, sobreposição ou quebra de cabeçalhos.
+2. **Respeito Estrito ao Modo Incremental:** Quando o curador solicitar execução ou revisão incremental (*"uma por uma para eu validar antes de commitar"*), nunca pré-editar múltiplas skills em lote; tocar estritamente 1 skill por ciclo de aprovação.

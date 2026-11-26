@@ -15,6 +15,7 @@ Antes de criar, refatorar, auditar ou publicar qualquer skill neste repositório
    - **Zero Hardcoding & Segurança Pública:** Este repositório é **público**. É estritamente proibido commitar identificadores de projetos privados, GUIDs reais, e-mails pessoais, tokens ou arquivos `.env*`.
 3. **Evals & Publicação:** Consulte [`knowledge/wiki/engineering/governanca-evals-e-publicacao.md`](./knowledge/wiki/engineering/governanca-evals-e-publicacao.md).
    - Toda skill em `skills/<name>/` DEVE conter `evals/evals.json` com mínimo de 2 cenários (`expectations`) e `trigger_tests` (`should_trigger` e `should_not_trigger`).
+   - Ao gerar diagramas/banners PNG para o `README.md` via Design-as-Code, inspecionar visualmente o PNG (`read_file`) antes de commitar. Quando o curador pedir revisão incremental ("uma por uma"), alterar estritamente 1 skill por ciclo.
 4. **Regra de Dependências Pinadas:** No `package.json`, todas as dependências devem utilizar versões exatas e pinadas (proibido `^` ou `~`).
 
 ---

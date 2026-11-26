@@ -85,7 +85,7 @@ metadata:
    * Consultar Wiki SSoT §2.1.C e executar chamada **Atribuição de Revisor** via `call_mcp_tool(ServerName="azure-devops", ToolName="repo_pull_request_write", Arguments={"action": "update_reviewers", "project": "<Project Name SSoT §2.1.A>", "repositoryId": "<Repository Name SSoT §2.1.A>", "pullRequestId": <PR_ID>, "reviewerAction": "add", "reviewerIds": ["<Revisor GUID SSoT §2.1.A>"]})`.
 5. **Governança de Coluna no Azure Boards conforme o Nível da PR (`wit_work_item_write`):**
    * **Se Nível 1 (Subtask SMART ➔ `feat/us-<US_ID>`):** Garantir que o card pai (`#<US_ID>`) **permaneça na aba `Developing`**.
-   * **Se Nível 2 (Card Principal INVEST ➔ `main`):** Mover o card pai (`#<US_ID>`) para **`Code Review` / `Pending`**.
+   * **Se Nível 2 (Card Principal INVEST ➔ `main`):** Mover o card pai (`#<US_ID>`) para a coluna **`Code Review`** com `System.State = "Pending"` (para tipos que aceitam `"Pending"`). **Exceção `chore`:** cards do tipo `chore` no Azure Boards aceitam apenas `To Do | Doing | Done`; nesses casos, atualizar somente o campo Kanban `WEF_*_Kanban.Column` para `"Code Review"`, mantendo `System.State = "Doing"` para evitar HTTP 400.
 6. **Gatilho Automático do Átomo `a-ado-us-summary` (`wit_work_item_comment_write`):**
    * Ao criar a PR, acionar imediatamente o protocolo de [`.agents/skills/a-ado-us-summary/SKILL.md`](../a-ado-us-summary/SKILL.md), publicando na discussão do Card Pai (`#<US_ID>`) um comentário de resumo executivo conciso (3-4 bullets sem detalhes granulares) referenciando a `PR #<PR_ID>` e a `Task #<TASK_ID>`.
 7. **Retorno ao Usuário:**

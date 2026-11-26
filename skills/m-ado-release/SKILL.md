@@ -115,7 +115,7 @@ Esta molécula compõe deterministicamente os seguintes átomos de automação:
   - `targetRefName`: `refs/heads/main`
   - Template canônico: `.azuredevops/pull_request_template/branches/main.md`
   - Vincular todos os Work Items da US (ID pai `<US_ID>` e IDs de todas as subtasks filhas entregues).
-  - Atualizar a coluna do Card Pai no Azure Boards para **`Code Review`** (`System.State = "Pending"`).
+  - Atualizar a coluna do Card Pai no Azure Boards para **`Code Review`** (`System.State = "Pending"` para tipos que suportam esse estado; para cards do tipo `chore`, que aceitam apenas `To Do | Doing | Done`, atualizar somente a coluna Kanban para `"Code Review"` mantendo `System.State = "Doing"`, evitando HTTP 400).
   - Atribuir o Curador como revisor padrão via MCP (`repo_pull_request_write` com `action: "update_reviewers"`).
 
 ### 5. Apresentação da Trava de Aprovação Humana em 1 Clique
